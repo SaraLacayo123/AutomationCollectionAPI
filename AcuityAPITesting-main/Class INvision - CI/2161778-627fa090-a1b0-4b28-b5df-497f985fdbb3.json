@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "2161778-627fa090-a1b0-4b28-b5df-497f985fdbb3",
+		"name": "Class INvision - CI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://cv-api-gateway.uat.classvaluation.com/qc-intelligence/api/v2/order-details/search?OrderState=Queued&OrderState=UnderReview&OrderState=Rejected&OrderState=RevisionReceived&OrderState=Approved&ExternalId=1123712.1&limit=10&offset=0",
+			"id": "2161778-689e2ed0-c571-404c-8f67-b62ec2e97cbc",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE3Mzc2NTg1MjEsImV4cCI6MTczNzY4MDEyMSwiaXNzIjoiaHR0cHM6Ly9pZHMudWF0LmNsYXNzdmFsdWF0aW9uLmNvbSIsImF1ZCI6WyJpbnRlbGxpZ2VuY2UucWMiLCJpbnRlbGxpZ2VuY2UuZGVza3RvcCIsInVzZXIuYXBpIiwib3JkZXJzLmFwaSIsIm9yZGVyc2V4dGVybmFsLmFwaSIsIm5leHN5cy5hcGkiLCJ2YWx1dHJ1c3QuYXBpIiwieHBhbnNlLmFwaSIsImZuYy5hcGkiLCJldm8uYXBpIiwidmFsdWVsaW5rLmFwaSIsImNvbm5leGlvbnMuYXBpIiwicmVsaWFuY2UuYXBpIiwibWktbXV0dWFsLmFwaSJdLCJjbGllbnRfaWQiOiJpbnZpc2lvblVYIiwic3ViIjoiNjVjY2Y5N2UwZDRlMWVkYWUzMjI5YjIyIiwiYXV0aF90aW1lIjoxNzM3NjU3NTk4LCJpZHAiOiJsb2NhbCIsIm5hbWUiOiJqdmVnYSIsImZpcnN0X25hbWUiOiJqZXNzaWNhIiwibGFzdF9uYW1lIjoidmVnYSIsImVtYWlsIjoianZlZ2FAY2xhc3N2YWx1YXRpb24uY29tIiwiY3YuY29ubmVjdGlvbiI6IkNsYXNzVmFsdWF0aW9uIiwidXNlclR5cGUiOiJpbnRlcm5hbCIsInJvbGUiOlsiZW1wdHkiLCJYUEFOU0UiLCJWQUxVVFJVU1QiLCJWQUxVRUxJTksiLCJVU0VSX1NUQUZGX0FETUlOIiwiU1lTVEVNX1VTRVIiLCJTWVNURU1fU1RBRkYiLCJTQ09QRV9UT09MUyIsIlJFTElBTkNFIiwiUUNfVVNFUiIsIlBVQkxJQy1BQ0NFU1MiLCJPUkRFUlNfRVhURVJOQUwiLCJORVhTWVMtT1JQSEFOIiwiTkVYU1lTIiwiTUlNVVRVQUwiLCJNRVJJRElBTkxJTksiLCJMRU5ESU5HUUIiLCJGTkMiLCJFVk8iLCJERVNLVE9QX0FQUFJPVkVSIiwiREFUQV9BTkFMWVNJUyIsIkRBVEFNQVNURVItU1VQUE9SVCIsIkRBVEFNQVNURVIiLCJDT05ORVhJT05TIiwiQ09ORklHLUFDQ0VTUyIsIkNMSUVOVCIsIkNMLVRSQUlOSU5HIiwiQ0wtU1VQUE9SVCIsIkNMLVNUQUZGX0FQUFJBSUVSIiwiQ0wtU0NBTl9RQ19FUyIsIkNMLVNDQU5fUUMiLCJDTC1PUEVSQVRJT04iLCJDQUxZWCIsIkFQUFJBSVNFUl9BRE1JTiIsIkFQUFJBSVNFUiIsIkFETUlOIl0sInBlcm1pc3Npb24iOlsiZW1wdHkiLCJpbnZpc2lvbjphY2Nlc3MiLCJkZXNrdG9wOmFjY2VzcyIsImRlc2t0b3A6YXBwcm92ZXIiLCJkZXNrdG9wOmVkaXQtb3JkZXIiLCJkZXNrdG9wOmV4cG9ydC1kYXRhIiwiZGVza3RvcDpmb3JjZXVubG9jayIsImRlc2t0b3A6cnVsZWhhbmRsZXIiLCJkZXNrdG9wOnFjLXNjYW4iLCJkZXNrdG9wOnFjLWVzY2FsYXRpb24iLCJkZXNrdG9wOnNlYXJjaGFsbCIsImRhc2hib2FyZGh1YjphY2Nlc3MiLCJpbnRlbGxpZ2VuY2U6YWNjZXNzIiwiaW50ZWxsaWdlbmNlOnJ1bGVoYW5kbGVyIiwib3A6YWNjZXNzIiwib3A6c2VhcmNoYWxsIiwib3A6ZWRpdC1vcmRlciIsIm9wOmFkZC1vcmRlciIsInVtOmFjY2VzcyIsInVtOmFkZC11c2VyIiwidW06ZWRpdC11c2VyIiwib3JkZXJzOmFjY2VzcyIsIm9yZGVyczptYXBwZXJzIiwib3JkZXJzOnByb2R1Y3RzIiwiaW50ZWxsaWdlbmNlOmRhc2hib2FyZGFsbCIsInlvdXJob21lOmFjY2VzcyIsImFwcHJhaXNlcm1wOmFjY2VzcyIsIm9lOmFjY2VzcyIsImNvbmZpZzphY2Nlc3MiLCJkZXNrdG9wOmFjc2EtYWxsLW9yZGVyIiwiY2FseXg6ZXZlbnRzIiwiY29ubmV4aW9uczpldmVudHMiLCJkYXRhbWFzdGVyOmFjY2VzcyIsInByb3BlcnR5ZGF0YTphY2Nlc3MiLCJleHBvcnQ6YWNjZXNzIiwid29ya2ZpbGU6YWNjZXNzIiwidXNlcnByb2ZpbGU6YWNjZXNzIiwiZGF0YW1hc3RlcjppbXBlcnNvbmF0ZSIsImV2bzpldmVudHMiLCJmbmM6ZXZlbnRzIiwibGVuZGluZ3FiOmV2ZW50cyIsIm1lcmlkaWFubGluazpldmVudHMiLCJtaW11dHVhbDphY2Nlc3MiLCJuZXhzeXM6ZXZlbnRzIiwibmV4c3lzOm9ycGhhbnMiLCJkZXNrdG9wOnB1YmxpYy1hY2Nlc3MiLCJkZXNrdG9wOmFjc2Etb3JkZXIiLCJyZWxpYW5jZTphY2Nlc3MiLCJyZWRpdG9yOmFjY2VzcyIsIm5leHN5czphY2Nlc3MiLCJuZXhzeXM6cmV0cnkiLCJ2YWx1dHJ1c3Q6YWNjZXNzIiwidmFsdXRydXN0OnJldHJ5IiwieHBhbnNlOmFjY2VzcyIsInhwYW5zZTpyZXRyeSIsInVtOmVkaXQtcm9sZSIsInRpbWV6b25lczphY2Nlc3MiLCJmbmM6YWNjZXNzIiwiZm5jOnJldHJ5IiwiZXZvOmFjY2VzcyIsImV2bzpyZXRyeSIsInZhbHVlbGluazphY2Nlc3MiLCJ2YWx1ZWxpbms6cmV0cnkiLCJjYWx5eDphY2Nlc3MiLCJjYWx5eDpyZXRyeSIsIm1lcmlkaWFubGluazphY2Nlc3MiLCJtZXJpZGlhbmxpbms6cmV0cnkiLCJjb25uZXhpb25zOmFjY2VzcyIsImNvbm5leGlvbnM6cmV0cnkiLCJsZW5kaW5ncWI6YWNjZXNzIiwibGVuZGluZ3FiOnJldHJ5IiwidmFsdWVsaW5rOmV2ZW50cyIsInZhbHV0cnVzdDpldmVudHMiLCJ4cGFuc2U6ZXZlbnRzIl0sInNjb3BlIjpbIm9wZW5pZCIsImludGVsbGlnZW5jZS5xYyIsImludGVsbGlnZW5jZS5kZXNrdG9wIiwidXNlci5hcGkiLCJvcmRlcnMuYXBpIiwib3JkZXJzZXh0ZXJuYWwuYXBpIiwibmV4c3lzLmFwaSIsInZhbHV0cnVzdC5hcGkiLCJ4cGFuc2UuYXBpIiwiZm5jLmFwaSIsImV2by5hcGkiLCJ2YWx1ZWxpbmsuYXBpIiwiY29ubmV4aW9ucy5hcGkiLCJyZWxpYW5jZS5hcGkiLCJtaS1tdXR1YWwuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.YQLmXM6rHbxDzJBS91Z2Eokc_nabuGgJ9CDdq_iWKxtYe4LcR29d8_yErnMr4OO78T4zynXXRq37EolOSHGkxbbVgZo2JrQ4SZTKdqJttdPVSwmAT8PqnfSojkBBF6tDZ64PzGKbrS8IhNKmKnrMHXq6cX8P-aMSvvjq5NsMS-TyH_uSw1NgxDe6EGI-NYehSF11_XVKRbbNrjeUjrPu8jRezVx5rYB7Q0D1gPsUHrawXyvAF_0A9EJmw3-C9FUfJ_joiIA3PW-YHJiaGbwXRAFJKiLya8X_sKp8BtudQzGvhc8g0XA8tRejOSe9mjB5gdjPwM33-8-PdqX5AE2aGg"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "ngsw-bybass",
+						"value": "true"
+					},
+					{
+						"key": "origin",
+						"value": "https://invision-plus.uat.classvaluation.com"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://invision-plus.uat.classvaluation.com/"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-site"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+					}
+				],
+				"url": {
+					"raw": "https://cv-api-gateway.uat.classvaluation.com/qc-intelligence/api/v2/order-details/search?OrderState=Queued&OrderState=UnderReview&OrderState=Rejected&OrderState=RevisionReceived&OrderState=Approved&ExternalId=1123712.1&limit=10&offset=0",
+					"protocol": "https",
+					"host": [
+						"cv-api-gateway",
+						"uat",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"qc-intelligence",
+						"api",
+						"v2",
+						"order-details",
+						"search"
+					],
+					"query": [
+						{
+							"key": "OrderState",
+							"value": "Queued"
+						},
+						{
+							"key": "OrderState",
+							"value": "UnderReview"
+						},
+						{
+							"key": "OrderState",
+							"value": "Rejected"
+						},
+						{
+							"key": "OrderState",
+							"value": "RevisionReceived"
+						},
+						{
+							"key": "OrderState",
+							"value": "Approved"
+						},
+						{
+							"key": "ExternalId",
+							"value": "1123712.1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl 'https://cv-api-gateway.uat.classvaluation.com/qc-intelligence/api/v2/order-details/search?OrderState=Queued&OrderState=UnderReview&OrderState=Rejected&OrderState=RevisionReceived&OrderState=Approved&ExternalId=1123712.1&limit=10&offset=0' \\\r\n  -H 'accept: application/json, text/plain, */*' \\\r\n  -H 'accept-language: en-US,en;q=0.9' \\\r\n  -H 'authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE3Mzc2NTg1MjEsImV4cCI6MTczNzY4MDEyMSwiaXNzIjoiaHR0cHM6Ly9pZHMudWF0LmNsYXNzdmFsdWF0aW9uLmNvbSIsImF1ZCI6WyJpbnRlbGxpZ2VuY2UucWMiLCJpbnRlbGxpZ2VuY2UuZGVza3RvcCIsInVzZXIuYXBpIiwib3JkZXJzLmFwaSIsIm9yZGVyc2V4dGVybmFsLmFwaSIsIm5leHN5cy5hcGkiLCJ2YWx1dHJ1c3QuYXBpIiwieHBhbnNlLmFwaSIsImZuYy5hcGkiLCJldm8uYXBpIiwidmFsdWVsaW5rLmFwaSIsImNvbm5leGlvbnMuYXBpIiwicmVsaWFuY2UuYXBpIiwibWktbXV0dWFsLmFwaSJdLCJjbGllbnRfaWQiOiJpbnZpc2lvblVYIiwic3ViIjoiNjVjY2Y5N2UwZDRlMWVkYWUzMjI5YjIyIiwiYXV0aF90aW1lIjoxNzM3NjU3NTk4LCJpZHAiOiJsb2NhbCIsIm5hbWUiOiJqdmVnYSIsImZpcnN0X25hbWUiOiJqZXNzaWNhIiwibGFzdF9uYW1lIjoidmVnYSIsImVtYWlsIjoianZlZ2FAY2xhc3N2YWx1YXRpb24uY29tIiwiY3YuY29ubmVjdGlvbiI6IkNsYXNzVmFsdWF0aW9uIiwidXNlclR5cGUiOiJpbnRlcm5hbCIsInJvbGUiOlsiZW1wdHkiLCJYUEFOU0UiLCJWQUxVVFJVU1QiLCJWQUxVRUxJTksiLCJVU0VSX1NUQUZGX0FETUlOIiwiU1lTVEVNX1VTRVIiLCJTWVNURU1fU1RBRkYiLCJTQ09QRV9UT09MUyIsIlJFTElBTkNFIiwiUUNfVVNFUiIsIlBVQkxJQy1BQ0NFU1MiLCJPUkRFUlNfRVhURVJOQUwiLCJORVhTWVMtT1JQSEFOIiwiTkVYU1lTIiwiTUlNVVRVQUwiLCJNRVJJRElBTkxJTksiLCJMRU5ESU5HUUIiLCJGTkMiLCJFVk8iLCJERVNLVE9QX0FQUFJPVkVSIiwiREFUQV9BTkFMWVNJUyIsIkRBVEFNQVNURVItU1VQUE9SVCIsIkRBVEFNQVNURVIiLCJDT05ORVhJT05TIiwiQ09ORklHLUFDQ0VTUyIsIkNMSUVOVCIsIkNMLVRSQUlOSU5HIiwiQ0wtU1VQUE9SVCIsIkNMLVNUQUZGX0FQUFJBSUVSIiwiQ0wtU0NBTl9RQ19FUyIsIkNMLVNDQU5fUUMiLCJDTC1PUEVSQVRJT04iLCJDQUxZWCIsIkFQUFJBSVNFUl9BRE1JTiIsIkFQUFJBSVNFUiIsIkFETUlOIl0sInBlcm1pc3Npb24iOlsiZW1wdHkiLCJpbnZpc2lvbjphY2Nlc3MiLCJkZXNrdG9wOmFjY2VzcyIsImRlc2t0b3A6YXBwcm92ZXIiLCJkZXNrdG9wOmVkaXQtb3JkZXIiLCJkZXNrdG9wOmV4cG9ydC1kYXRhIiwiZGVza3RvcDpmb3JjZXVubG9jayIsImRlc2t0b3A6cnVsZWhhbmRsZXIiLCJkZXNrdG9wOnFjLXNjYW4iLCJkZXNrdG9wOnFjLWVzY2FsYXRpb24iLCJkZXNrdG9wOnNlYXJjaGFsbCIsImRhc2hib2FyZGh1YjphY2Nlc3MiLCJpbnRlbGxpZ2VuY2U6YWNjZXNzIiwiaW50ZWxsaWdlbmNlOnJ1bGVoYW5kbGVyIiwib3A6YWNjZXNzIiwib3A6c2VhcmNoYWxsIiwib3A6ZWRpdC1vcmRlciIsIm9wOmFkZC1vcmRlciIsInVtOmFjY2VzcyIsInVtOmFkZC11c2VyIiwidW06ZWRpdC11c2VyIiwib3JkZXJzOmFjY2VzcyIsIm9yZGVyczptYXBwZXJzIiwib3JkZXJzOnByb2R1Y3RzIiwiaW50ZWxsaWdlbmNlOmRhc2hib2FyZGFsbCIsInlvdXJob21lOmFjY2VzcyIsImFwcHJhaXNlcm1wOmFjY2VzcyIsIm9lOmFjY2VzcyIsImNvbmZpZzphY2Nlc3MiLCJkZXNrdG9wOmFjc2EtYWxsLW9yZGVyIiwiY2FseXg6ZXZlbnRzIiwiY29ubmV4aW9uczpldmVudHMiLCJkYXRhbWFzdGVyOmFjY2VzcyIsInByb3BlcnR5ZGF0YTphY2Nlc3MiLCJleHBvcnQ6YWNjZXNzIiwid29ya2ZpbGU6YWNjZXNzIiwidXNlcnByb2ZpbGU6YWNjZXNzIiwiZGF0YW1hc3RlcjppbXBlcnNvbmF0ZSIsImV2bzpldmVudHMiLCJmbmM6ZXZlbnRzIiwibGVuZGluZ3FiOmV2ZW50cyIsIm1lcmlkaWFubGluazpldmVudHMiLCJtaW11dHVhbDphY2Nlc3MiLCJuZXhzeXM6ZXZlbnRzIiwibmV4c3lzOm9ycGhhbnMiLCJkZXNrdG9wOnB1YmxpYy1hY2Nlc3MiLCJkZXNrdG9wOmFjc2Etb3JkZXIiLCJyZWxpYW5jZTphY2Nlc3MiLCJyZWRpdG9yOmFjY2VzcyIsIm5leHN5czphY2Nlc3MiLCJuZXhzeXM6cmV0cnkiLCJ2YWx1dHJ1c3Q6YWNjZXNzIiwidmFsdXRydXN0OnJldHJ5IiwieHBhbnNlOmFjY2VzcyIsInhwYW5zZTpyZXRyeSIsInVtOmVkaXQtcm9sZSIsInRpbWV6b25lczphY2Nlc3MiLCJmbmM6YWNjZXNzIiwiZm5jOnJldHJ5IiwiZXZvOmFjY2VzcyIsImV2bzpyZXRyeSIsInZhbHVlbGluazphY2Nlc3MiLCJ2YWx1ZWxpbms6cmV0cnkiLCJjYWx5eDphY2Nlc3MiLCJjYWx5eDpyZXRyeSIsIm1lcmlkaWFubGluazphY2Nlc3MiLCJtZXJpZGlhbmxpbms6cmV0cnkiLCJjb25uZXhpb25zOmFjY2VzcyIsImNvbm5leGlvbnM6cmV0cnkiLCJsZW5kaW5ncWI6YWNjZXNzIiwibGVuZGluZ3FiOnJldHJ5IiwidmFsdWVsaW5rOmV2ZW50cyIsInZhbHV0cnVzdDpldmVudHMiLCJ4cGFuc2U6ZXZlbnRzIl0sInNjb3BlIjpbIm9wZW5pZCIsImludGVsbGlnZW5jZS5xYyIsImludGVsbGlnZW5jZS5kZXNrdG9wIiwidXNlci5hcGkiLCJvcmRlcnMuYXBpIiwib3JkZXJzZXh0ZXJuYWwuYXBpIiwibmV4c3lzLmFwaSIsInZhbHV0cnVzdC5hcGkiLCJ4cGFuc2UuYXBpIiwiZm5jLmFwaSIsImV2by5hcGkiLCJ2YWx1ZWxpbmsuYXBpIiwiY29ubmV4aW9ucy5hcGkiLCJyZWxpYW5jZS5hcGkiLCJtaS1tdXR1YWwuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.YQLmXM6rHbxDzJBS91Z2Eokc_nabuGgJ9CDdq_iWKxtYe4LcR29d8_yErnMr4OO78T4zynXXRq37EolOSHGkxbbVgZo2JrQ4SZTKdqJttdPVSwmAT8PqnfSojkBBF6tDZ64PzGKbrS8IhNKmKnrMHXq6cX8P-aMSvvjq5NsMS-TyH_uSw1NgxDe6EGI-NYehSF11_XVKRbbNrjeUjrPu8jRezVx5rYB7Q0D1gPsUHrawXyvAF_0A9EJmw3-C9FUfJ_joiIA3PW-YHJiaGbwXRAFJKiLya8X_sKp8BtudQzGvhc8g0XA8tRejOSe9mjB5gdjPwM33-8-PdqX5AE2aGg' \\\r\n  -H 'cache-control: no-cache' \\\r\n  -H 'ngsw-bybass: true' \\\r\n  -H 'origin: https://invision-plus.uat.classvaluation.com' \\\r\n  -H 'pragma: no-cache' \\\r\n  -H 'priority: u=1, i' \\\r\n  -H 'referer: https://invision-plus.uat.classvaluation.com/' \\\r\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"131\", \"Chromium\";v=\"131\", \"Not_A Brand\";v=\"24\"' \\\r\n  -H 'sec-ch-ua-mobile: ?0' \\\r\n  -H 'sec-ch-ua-platform: \"Windows\"' \\\r\n  -H 'sec-fetch-dest: empty' \\\r\n  -H 'sec-fetch-mode: cors' \\\r\n  -H 'sec-fetch-site: same-site' \\\r\n  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'"
+			},
+			"response": []
+		}
+	]
+}

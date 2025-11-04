@@ -1,0 +1,1264 @@
+{
+	"info": {
+		"_postman_id": "29689341-67cd16c3-bbcb-41d2-9f9f-06b8a0b8363b",
+		"name": "CMP Digital_Orders_Creation UAT DataCollector_SH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orders/Create Property Data Advantage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "456c11ca-fccf-4f8d-902c-3d9f6f435cae",
+						"exec": [
+							"//Capture the JSON Response",
+							"var jsonData = pm.response.json();",
+							"var orderId = pm.collectionVariables.set(\"OrderID\", jsonData.OrderID);",
+							"var orderItemId = pm.collectionVariables.set(\"OrderItemID\", jsonData.OrderItemID);",
+							" ",
+							"//Run some quick validations and set OrderID and OrderItemID variables",
+							"pm.test(\"Check 'OrderID' value was created\", function () {    ",
+							"    pm.expect(orderId).not.equal(null);",
+							"});",
+							"",
+							"pm.test(\"Check 'OrderItemID' is set\", function () {",
+							"    pm.expect(orderItemId).not.equal(null);",
+							"});",
+							"",
+							"//Await to send the next Request",
+							"setTimeout(() => {",
+							"    postman.setNextRequest(\"Orders/Search/Data - Order Confirmed\");",
+							"}, 1000)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-4c452565-10d8-417f-9039-f7755561ddeb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7",
+						"disabled": true
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=o3s3ooztfowutitktwp2twbq; __RequestVerificationToken=qZmjU-JkqsQrhwD6FC9iOqx2zTUyJ0cWdyrMb7q2SlUNac0VAEeKriY4CdIuV6CsZ3kKuPJ0DI8aOt3sE6oZyeIX2w43793_tkZdgEXUrsw1; .ASPXAUTH=E36DCFC8D68AEB69FF3F326F93BC445CA7D129DD5C58BE831282EF285EBF9175E18787836E7A3088D11736A178ECFE373FCBB03CFF893805C6B5DF244364A8B3C16639A9ACEFE664B879CF32E6A03C11CB8E1A7F56F759952310E972A0A40453",
+						"disabled": true
+					},
+					{
+						"key": "dnt",
+						"value": "1",
+						"disabled": true
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com",
+						"disabled": true
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i",
+						"disabled": true
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/Create",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\"",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin",
+						"disabled": true
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+						"disabled": true
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "ReferrerUrl",
+							"value": "https://{{acuityBaseURL}}Orders/Pipeline"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BatchName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanSystem",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientID",
+							"value": "{{ClientID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "{{ClientBranchID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ProductID",
+							"value": "{{ProductID_PDA}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "{{BillingTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientFee",
+							"value": "{{ClientFee}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.InvestorCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "{{PropertyTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "{{OccupancyTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address1",
+							"value": "{{$randomInt}} {{Address1}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PostalCode",
+							"value": "{{PostalCode}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.City",
+							"value": "{{City}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.State",
+							"value": "{{State}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FIPS",
+							"value": "08059"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.APN",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Latitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Longitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Region",
+							"value": "{{Region}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts.Index",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeID",
+							"value": "11"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MiddleName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].SocialSecurityNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Fax",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Email",
+							"value": "{{$randomEmail}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Title",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ParentID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeDescription",
+							"value": "Borrower"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FirstName",
+							"value": "test"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].LastName",
+							"value": "test"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FullName",
+							"value": "test test"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].WorkPhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].HomePhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MobilePhone",
+							"value": "(456) 464-5646"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "{{LoanPurposeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "{{LoanTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "4654{{$randomInt}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LienPosition",
+							"value": "{{LienPosition}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SalePrice",
+							"value": "{{SalePrice}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClassification",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DUReferenceNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockboxCode",
+							"value": "{{$randomInt}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RushOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{acuityBaseURL}}/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"{{acuityBaseURL}}"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Create Automation Digital Product",
+			"id": "29689341-affd6e8a-3e5d-4488-8e89-d4f1b0405006",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "ReferrerUrl",
+							"value": "https://cmp-staff.uat.classvaluation.com/Orders/1111712/Items/1/Dashboard"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BatchName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanSystem",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientID",
+							"value": "{{ClientID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "{{ClientBranchID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ProductID",
+							"value": "{{ProductID_AUDP}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "{{BillingTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientFee",
+							"value": "{{ClientFee}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.InvestorCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "{{PropertyTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "{{OccupancyTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address1",
+							"value": "{{$randomInt}} {{Address1}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PostalCode",
+							"value": "{{PostalCode}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.City",
+							"value": "{{City}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.State",
+							"value": "{{State}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FIPS",
+							"value": "06059"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.APN",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Latitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Longitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Region",
+							"value": "{{Region}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts.Index",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeID",
+							"value": "11"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MiddleName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].SocialSecurityNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Fax",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Email",
+							"value": "slacayo@classvaluation.com"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Title",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ParentID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeDescription",
+							"value": "Borrower"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FirstName",
+							"value": "Sara"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].LastName",
+							"value": "Lacayo"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FullName",
+							"value": "Sara Lacayo"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].WorkPhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].HomePhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MobilePhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "{{LoanPurposeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "{{LoanTypeID}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "89890000+{{$randomInt}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LienPosition",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SalePrice",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClassification",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DUReferenceNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockboxCode",
+							"value": "{{$randomInt}}"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RushOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientWholesellerID",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.uat.classvaluation.com/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"uat",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Account/Logon_Digital",
+			"id": "29689341-26cf9a0f-bfd4-4f29-93f8-0976f013a077",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "cache-control",
+						"value": "max-age=0"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=sh3go0d0eqjdomchv0dvdsyf"
+					},
+					{
+						"key": "dnt",
+						"value": "1"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "priority",
+						"value": "u=0, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Account/Logon?ReturnUrl=%2fOrders%2fPipeline"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "document"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "navigate"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "sec-fetch-user",
+						"value": "?1"
+					},
+					{
+						"key": "upgrade-insecure-requests",
+						"value": "1"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "RememberMe",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "UserName",
+							"value": "{{acuityUserName}}"
+						},
+						{
+							"type": "text",
+							"key": "Password",
+							"value": "{{acuityPwd}}"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{acuityBaseURL}}/Account/Logon?ReturnUrl=%2fOrders%2fPipeline",
+					"protocol": "https",
+					"host": [
+						"{{acuityBaseURL}}"
+					],
+					"path": [
+						"Account",
+						"Logon"
+					],
+					"query": [
+						{
+							"key": "ReturnUrl",
+							"value": "%2fOrders%2fPipeline"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "25736f6f-057a-4063-86e7-92c1f3224f23",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6fa6d6ec-55b8-4f1d-8103-04c1fd330edd",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ClientID",
+			"value": "56865",
+			"type": "string"
+		},
+		{
+			"key": "ClientBranchID",
+			"value": "1476",
+			"type": "string"
+		},
+		{
+			"key": "ProductID_AUDP",
+			"value": "292",
+			"type": "string"
+		},
+		{
+			"key": "BillingTypeID",
+			"value": "INVOICE",
+			"type": "string"
+		},
+		{
+			"key": "ClientFee",
+			"value": "120",
+			"type": "string"
+		},
+		{
+			"key": "PropertyTypeID",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "OccupancyTypeID",
+			"value": "ABANDONED",
+			"type": "string"
+		},
+		{
+			"key": "Address1",
+			"value": "S Harlan St",
+			"type": "string"
+		},
+		{
+			"key": "PostalCode",
+			"value": "80232",
+			"type": "string"
+		},
+		{
+			"key": "City",
+			"value": "Denver",
+			"type": "string"
+		},
+		{
+			"key": "State",
+			"value": "CO",
+			"type": "string"
+		},
+		{
+			"key": "Region",
+			"value": "URBAN",
+			"type": "string"
+		},
+		{
+			"key": "LoanPurposeID",
+			"value": "ACQUISITION",
+			"type": "string"
+		},
+		{
+			"key": "LoanTypeID",
+			"value": "CONV",
+			"type": "string"
+		},
+		{
+			"key": "LienPosition",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "SalePrice",
+			"value": "0.00",
+			"type": "string"
+		},
+		{
+			"key": "OrderID",
+			"value": ""
+		},
+		{
+			"key": "OrderItemID",
+			"value": ""
+		},
+		{
+			"key": "ProductID_PDA",
+			"value": "63",
+			"type": "string"
+		}
+	]
+}

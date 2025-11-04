@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "49799147-94196107-cb80-474d-9adc-983f438fc03a",
+		"name": "CMP Experience",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Invision-VirtualInspection Integration",
+			"item": [
+				{
+					"name": "Integration_DesktopId",
+					"id": "49799147-9e44e594-acfd-4bde-acdb-10e8df1a36ad",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{cmpExpBaseUrl}}/Integrations/{{orderId}}/desktopId",
+							"protocol": "https",
+							"host": [
+								"{{cmpExpBaseUrl}}"
+							],
+							"path": [
+								"Integrations",
+								"{{orderId}}",
+								"desktopId"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "49799147-6c7b5e0e-b44c-4ed9-953e-201fc275af20"
+		}
+	]
+}

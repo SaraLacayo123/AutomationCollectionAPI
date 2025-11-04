@@ -1,0 +1,1604 @@
+{
+	"info": {
+		"_postman_id": "29689341-de8a2277-4735-46d9-bf1a-0d6bcabc900d",
+		"name": "AWS SNS Publish and S3 Events",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Phase 1",
+			"item": [
+				{
+					"name": "Account/Logon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "900cf965-c7cd-4e05-afb4-527000086306",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ebe7075f-68d0-475f-805d-184ff4954bc7",
+								"exec": [
+									"//Clear Cookies\r",
+									"const jar = pm.cookies.jar();\r",
+									"\r",
+									"jar.clear(pm.request.url, '.ASPXAUTH', function (err) {\r",
+									"  if (err) {\r",
+									"        return console.error(err);\r",
+									"    } else {\r",
+									"        console.info(\"Cookie .ASPXAUTH cleared\")\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"jar.clear(pm.request.url, 'ASP.NET_SessionId', function (err) {\r",
+									"    if (err) {\r",
+									"        return console.error(err);\r",
+									"    } else {\r",
+									"        console.info(\"Cookie ASP.NET_SessionId cleared\")\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "29689341-d618306b-7c8c-4d1f-a09d-871589a671df",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"RememberMe\": \"false\",\r\n    \"UserName\": \"{{acuityUserName}}\",\r\n    \"Password\": \"{{acuityPwd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{acuityBaseURL}}/Account/Logon?acuityBaseURL=cmp-staff.test.classvaluation.com&acuityUserName=jvega&acuityPwd=Password12@",
+							"protocol": "https",
+							"host": [
+								"{{acuityBaseURL}}"
+							],
+							"path": [
+								"Account",
+								"Logon"
+							],
+							"query": [
+								{
+									"key": "acuityBaseURL",
+									"value": "cmp-staff.test.classvaluation.com",
+									"description": "cmp-staff.test.classvaluation.com"
+								},
+								{
+									"key": "acuityUserName",
+									"value": "jvega",
+									"description": "jvega"
+								},
+								{
+									"key": "acuityPwd",
+									"value": "Password12@",
+									"description": "Password12@",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders/Search/Data - Order Confirmed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7e533674-56a2-4ac4-bc6c-54823288316a",
+								"exec": [
+									"pm.test(\"Get Stree Address\", function () {  \r",
+									"   \r",
+									"    var orderData = pm.response.json();\r",
+									"    console.log(\"orderData\", orderData.rows)\r",
+									"    if (!orderData || !Array.isArray(orderData.rows)){\r",
+									"        console.error(\"No data found in the response\");\r",
+									"        pm.expect.fail(\"JSON invalid\");\r",
+									"        return;\r",
+									"    }\r",
+									"    const address = orderData.rows[0].Address;\r",
+									"    console.log(\"address\", address)\r",
+									"\r",
+									"      pm.collectionVariables.set('Stree', address);\r",
+									"    console.log(\"Stree Address is\", pm.collectionVariables.get('Stree')); \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "70c5aad7-89cb-4712-9bd7-591172a844d5",
+								"exec": [
+									"// Get the current date and time in UTC",
+									"let now = new Date();",
+									"",
+									"// Create arrays for day and month abbreviations",
+									"const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];",
+									"const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];",
+									"",
+									"// Extract and format each component",
+									"const dayOfWeek = days[now.getUTCDay()];",
+									"const month = months[now.getUTCMonth()];",
+									"const dayOfMonth = String(now.getUTCDate()).padStart(2, '0');",
+									"const year = now.getUTCFullYear();",
+									"const hours = String(now.getUTCHours()).padStart(2, '0');",
+									"const minutes = String(now.getUTCMinutes()).padStart(2, '0');",
+									"const seconds = String(now.getUTCSeconds()).padStart(2, '0');",
+									"",
+									"// Construct the final string",
+									"let formattedDate = `${dayOfWeek} ${month} ${dayOfMonth} ${year} ${hours}:${minutes}:${seconds} GMT+0000`;",
+									"",
+									"// Set an environment variable with the formatted date",
+									"pm.environment.set(\"myFormattedDate\", formattedDate);",
+									"console.log(\"Date\", formattedDate);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "29689341-5d9f3d94-7de5-435e-959e-088c4a841955",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "__RequestVerificationToken",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							},
+							{
+								"key": "authority",
+								"value": "{{acuityBaseURL}}"
+							},
+							{
+								"key": "accept",
+								"value": "application/json, text/javascript, */*; q=0.01"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9"
+							},
+							{
+								"key": "origin",
+								"value": "https://{{acuityBaseURL}}"
+							},
+							{
+								"key": "referer",
+								"value": "https://{{acuityBaseURL}}/Orders/Search"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty"
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors"
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "same-origin"
+							},
+							{
+								"key": "x-requested-with",
+								"value": "XMLHttpRequest"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_search\": \"false\",\r\n    \"rows\": 100,\r\n    \"page\": 1,\r\n    \"sidx\": \"\",\r\n    \"sord\": \"asc\",\r\n    \"loadSavedData\": false,\r\n    \"searchCriteria\": {\r\n        \"OrderItemQueryID\": \"0\",\r\n        \"Description\": \"\",\r\n        \"OrderID\": \"{{OrderProviderID}}.1\",\r\n        \"VendorID\": \"\",\r\n        \"VendorName\": \"\",\r\n        \"OrderDate\": \"\",\r\n        \"OrderDateTo\": \"\",\r\n        \"CompletedDate\": \"\",\r\n        \"CompletedDateTo\": \"\",\r\n        \"DateRequired\": \"\",\r\n        \"LoanNumber\": \"\",\r\n        \"PartnerNumber\": \"\",\r\n        \"BorrowerLastName\": \"\",\r\n        \"ServiceRepUser\": \"\",\r\n        \"Address\": \"\",\r\n        \"City\": \"\",\r\n        \"BulkOrderID\": \"\",\r\n        \"OnlyOpenOrders\": false,\r\n        \"OnlyPendingComments\": false,\r\n        \"OnlyDelinquentItems\": false,\r\n        \"OnlyNonDelinquentItems\": false,\r\n        \"Filters\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{acuityBaseURL}}/Orders/Search/Data",
+							"protocol": "https",
+							"host": [
+								"{{acuityBaseURL}}"
+							],
+							"path": [
+								"Orders",
+								"Search",
+								"Data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Orders/StatusHistory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1a21ef0e-9b80-4c4d-92a6-8730245d256c",
+								"exec": [
+									"// Fixed the 'Inspection Id' test to resolve the ReferenceError: orderData is not defined",
+									"pm.test(\"Verify that 'Project Id' was created\", function () {  ",
+									"    var orderData = pm.response.json();",
+									"    if (!orderData || !Array.isArray(orderData.rows)){",
+									"        console.error(\"No data found in the response\");",
+									"        pm.expect.fail(\"JSON invalid\");",
+									"        return;",
+									"    }",
+									"    const rows = orderData.rows;",
+									"",
+									"    // Find elements",
+									"    const insideMapsObj = rows.find(item => item.Text && item.Text.includes(\"InsideMaps created the order id\"));",
+									"    const insideMapsObj2 = rows.find(item => item.Text && item.Text.includes(\"An Inspection Id was created\"));",
+									"",
+									"    pm.expect(insideMapsObj).to.be.an('object', 'No se encontró el texto \"InsideMaps created the order id\" en el texto de la respuesta');",
+									"    pm.expect(insideMapsObj2).to.be.an('object', 'No se encontró el texto \"An Inspection Id\" en el texto de la respuesta');",
+									"",
+									"    // Extract and validate the ID",
+									"    const insideText = insideMapsObj.Text.split(\" \");",
+									"    const insideText2 = insideMapsObj2.Text.split(\" \");",
+									"   ",
+									"    // Verify array length",
+									"    pm.expect(insideText).to.be.an('array').and.to.have.lengthOf.at.least(6, \"No se pudo extraer el Id\");",
+									"    pm.expect(insideText2).to.be.an('array').and.to.have.lengthOf.at.least(6, \"No se pudo extraer el Id\");",
+									"",
+									"    const projectId = insideText[5];",
+									"    const propertyId = insideText[15];",
+									"    const inspectionId = insideText2[5];",
+									"    let projectIdClean = insideText[5].replace(/[^\\w\\s]/g, '');",
+									"    console.log(\"projectIdClean\", projectIdClean);",
+									"",
+									"    // Validate IDs are not empty",
+									"    pm.expect(projectId).to.be.a('string').and.to.not.be.empty;",
+									"    pm.expect(propertyId).to.be.a('string').and.to.not.be.empty;",
+									"    pm.expect(inspectionId).to.be.a('string').and.to.not.be.empty;",
+									"",
+									"    // Establish variables projectId, propertyId, inspectionId",
+									"    pm.collectionVariables.set('projectId', projectIdClean);",
+									"    console.log(`Project ID is ${projectIdClean}`);",
+									"    pm.collectionVariables.set('propertyId', propertyId);",
+									"    console.log(`Property ID is ${propertyId}`);",
+									"    pm.collectionVariables.set('inspectionId', inspectionId);",
+									"    console.log(`Inspection ID is ${inspectionId}`);",
+									"",
+									"    const eventDate = new Date();",
+									"    const fullTimeStamp = eventDate.toISOString();",
+									"    pm.collectionVariables.set('currentTime', fullTimeStamp);",
+									"    console.log(`Current Time is ${fullTimeStamp}`);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "29689341-23091021-5553-491d-a801-c926f9c8fe70",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{acuityBaseURL}}/Orders/{{OrderProviderID}}/Items/{{OrderItemId}}/StatusHistory/Data?_search=false&nd=1728428036003&rows=-1&page=1&sidx=&sord=asc",
+							"protocol": "https",
+							"host": [
+								"{{acuityBaseURL}}"
+							],
+							"path": [
+								"Orders",
+								"{{OrderProviderID}}",
+								"Items",
+								"{{OrderItemId}}",
+								"StatusHistory",
+								"Data"
+							],
+							"query": [
+								{
+									"key": "_search",
+									"value": "false"
+								},
+								{
+									"key": "nd",
+									"value": "1728428036003"
+								},
+								{
+									"key": "rows",
+									"value": "-1"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sidx",
+									"value": ""
+								},
+								{
+									"key": "sord",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "29689341-6aa5c9d3-f9b6-40de-a79a-eab96e64c2c4"
+		},
+		{
+			"name": "Phase 2",
+			"item": [
+				{
+					"name": "1.FirstSpinTaken",
+					"id": "29689341-34dd88b6-9e04-43c6-82af-9e5f0b131b45",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "{{awsS3RegionVirginia}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-1.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-1.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n    \"eventName\": \"{{eventOne}}\",\n    \"eventDate\": \"{{currentTime}}\",\n    \"appVersion\": \"\",\n    \"inspectionModelVersion\": \"\",\n    \"projectId\": \"{{projectId}}\",\n    \"propertyId\": \"{{propertyId}}\",\n    \"orderId\": \"{{propertyId}}\",\n    \"propertyAddress\": {\n        \"street\": \"{{Stree}}\",\n        \"city\": \"Cypress\",\n        \"state\": \"CA\",\n        \"zip\": \"90630\"\n    },\n    \"organizationId\": \"Cj1Nvxx7Jk\",\n    \"inspector\": {\n        \"id\": \"hDwU2FySlG\",\n        \"email\": \"placeholder@test.com\",\n        \"firstName\": \"Placeholder Vendor\",\n        \"lastName\": \"\"\n    },\n    \"appTime\": \"{{myFormattedDate}}(Coordinated Universal Time)\"\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventOne}}&TopicArn=arn:aws:sns:us-east-1:359298278138:{{TopicArn}}&Version={{Version}}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{snsVirginia}}.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"{{snsVirginia}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				},
+				{
+					"name": "2.FinalSpinTaken",
+					"id": "29689341-28185375-ad5e-4a9c-b0f8-67b64fde02be",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "region",
+									"value": "{{awsS3RegionVirginia}}",
+									"type": "string"
+								},
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-1.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-1.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n    \"eventName\": \"{{eventTwo}}\",\n      \"eventDate\": \"{{currentTime}}\",\n    \"appVersion\": \"\",\n    \"inspectionModelVersion\": \"\",\n    \"projectId\": \"{{projectId}}\",\n    \"propertyId\": \"{{propertyId}}\",\n    \"orderId\": \"{{propertyId}}\",\n    \"propertyAddress\": {\n        \"street\": \"{{Stree}}\",\n        \"city\": \"Cypress\",\n        \"state\": \"CA\",\n        \"zip\": \"90630\"\n    },\n    \"organizationId\": \"Cj1Nvxx7Jk\",\n    \"inspector\": {\n        \"id\": \"hDwU2FySlG\",\n        \"email\": \"placeholder@test.com\",\n        \"firstName\": \"Placeholder Vendor\",\n        \"lastName\": \"\"\n    },\n    \"appTime\": \"{{myFormattedDate}}(Coordinated Universal Time)\"\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventTwo}}&TopicArn=arn:aws:sns:us-east-1:359298278138:{{TopicArn}}&Version={{Version}}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{snsVirginia}}.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"{{snsVirginia}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				},
+				{
+					"name": "3.ProjectSubmissionInitialized",
+					"id": "29689341-08b72a06-711b-4797-8ff5-b1edbf1a3793",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "{{awsS3RegionVirginia}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-1.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-1.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n    \"eventName\": \"{{eventThree}}\",\n    \"eventDate\": \"{{currentTime}}\",\n    \"appVersion\": \"\",\n    \"inspectionModelVersion\": \"\",\n    \"projectId\": \"{{projectId}}\",\n    \"propertyId\": \"{{propertyId}}\",\n    \"orderId\": \"{{propertyId}}\",\n    \"propertyAddress\": {\n        \"street\": \"{{Stree}}\",\n        \"city\": \"Cypress\",\n        \"state\": \"CA\",\n        \"zip\": \"90630\"\n    },\n    \"organizationId\": \"Cj1Nvxx7Jk\",\n    \"inspector\": {\n        \"id\": \"hDwU2FySlG\",\n        \"email\": \"placeholder@test.com\",\n        \"firstName\": \"Placeholder Vendor\",\n        \"lastName\": \"\"\n    },\n    \"appTime\": \"{{myFormattedDate}}(Coordinated Universal Time)\"\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventThree}}&TopicArn=arn:aws:sns:us-east-1:359298278138:{{TopicArn}}&Version={{Version}}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{snsVirginia}}.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"{{snsVirginia}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				},
+				{
+					"name": "4.ProjectFullySubmitted",
+					"id": "29689341-8a49253e-d60d-4c1f-9e1d-fbdd57e41a04",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "{{awsS3RegionVirginia}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-1.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-1.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n    \"eventName\": \"{{eventFour}}\",\n    \"eventDate\": \"{{currentTime}}\",\n    \"appVersion\": \"\",\n    \"inspectionModelVersion\": \"\",\n    \"projectId\": \"{{projectId}}\",\n    \"propertyId\": \"{{propertyId}}\",\n    \"orderId\": \"{{propertyId}}\",\n    \"propertyAddress\": {\n        \"street\": \"{{Stree}}\",\n        \"city\": \"Cypress\",\n        \"state\": \"CA\",\n        \"zip\": \"90630\"\n    },\n    \"organizationId\": \"Cj1Nvxx7Jk\",\n    \"inspector\": {\n        \"id\": \"hDwU2FySlG\",\n        \"email\": \"placeholder@test.com\",\n        \"firstName\": \"Placeholder Vendor\",\n        \"lastName\": \"\"\n    },\n    \"appTime\": \"{{myFormattedDate}}(Coordinated Universal Time)\"\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventFour}}&TopicArn=arn:aws:sns:us-east-1:359298278138:{{TopicArn}}&Version={{Version}}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{snsVirginia}}.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"{{snsVirginia}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				},
+				{
+					"name": "5.ProjectFinished",
+					"id": "29689341-4aefd4b5-f527-4030-948a-578c3fc0ee8b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "region",
+									"value": "{{awsS3RegionVirginia}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-1.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-1.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n    \"eventName\": \"{{eventFive}}\",\n    \"eventDate\": \"{{currentTime}}\",\n    \"appVersion\": \"\",\n    \"inspectionModelVersion\": \"\",\n    \"projectId\": \"{{projectId}}\",\n    \"propertyId\": \"{{propertyId}}\",\n    \"orderId\": \"{{propertyId}}\",\n    \"propertyAddress\": {\n        \"street\": \"{{Stree}}\",\n        \"city\": \"Cypress\",\n        \"state\": \"CA\",\n        \"zip\": \"90630\"\n    },\n    \"organizationId\": \"Cj1Nvxx7Jk\",\n    \"inspector\": {\n        \"id\": \"hDwU2FySlG\",\n        \"email\": \"placeholder@test.com\",\n        \"firstName\": \"Placeholder Vendor\",\n        \"lastName\": \"\"\n    },\n    \"appTime\": \"{{myFormattedDate}}(Coordinated Universal Time)\"\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventFive}}&TopicArn=arn:aws:sns:us-east-1:359298278138:{{TopicArn}}&Version={{Version}}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{snsVirginia}}.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"{{snsVirginia}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				},
+				{
+					"name": "6.Publish to S3",
+					"id": "29689341-70346195-c525-49de-a57c-7ba62309fd45",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "region",
+									"value": "{{awsS3RegionOhio}}",
+									"type": "string"
+								},
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "s3",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Credential=ASIAVHJ6YUL5KFW5LLKN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "9VHBTCli0/1163750.json"
+							}
+						},
+						"url": {
+							"raw": "https://{{S3BucketOhio}}.{{S3BucketRegionOhio}}.amazonaws.com/{{OrderProviderID}}.json",
+							"protocol": "https",
+							"host": [
+								"{{S3BucketOhio}}",
+								"{{S3BucketRegionOhio}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"{{OrderProviderID}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.ProjectModelCompleted",
+					"id": "29689341-92d4ed63-99a7-4937-900c-e73709ec468f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "region",
+									"value": "{{awsS3RegionOhio}}",
+									"type": "string"
+								},
+								{
+									"key": "sessionToken",
+									"value": "{{awsSessionToken}}",
+									"type": "string"
+								},
+								{
+									"key": "secretKey",
+									"value": "{{awsSecretKey}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{awsAccessKey}}",
+									"type": "string"
+								},
+								{
+									"key": "service",
+									"value": "sns",
+									"type": "string"
+								},
+								{
+									"key": "undefined",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded; charset=UTF-8"
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "Origin",
+								"value": "https://us-east-2.console.aws.amazon.com"
+							},
+							{
+								"key": "Referer",
+								"value": "https://us-east-2.console.aws.amazon.com/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "X-Amz-Content-Sha256",
+								"value": "16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-Date",
+								"value": "20250831T130036Z",
+								"disabled": true
+							},
+							{
+								"key": "X-Amz-User-Agent",
+								"value": "aws-sdk-js/2.1692.0 promise"
+							},
+							{
+								"key": "X-Amzn-Trace-Id",
+								"value": "Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"macOS\"",
+								"disabled": true
+							},
+							{
+								"key": "x-amz-security-token",
+								"value": "IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "Action=Publish&Message={\n\n  \"__AttachedFileS3Pointer\": {\n\n    \"Key\": \"{{OrderProviderID}}.json\",\n\n    \"BucketName\": \"{{S3BucketOhio}}\",\n\n    \"SignedUrl\": \"https://cv-test-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com/{{OrderProviderID}}.json\"\n\n  }\n\n}&MessageAttributes.entry.1.Name={{EventName}}&MessageAttributes.entry.1.Value.DataType={{DataType}}&MessageAttributes.entry.1.Value.StringValue={{eventSeven}}&TopicArn=arn:aws:sns:us-east-2:359298278138:{{TopicArnOhio}}&Version={{Version}}\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sns.us-east-2.amazonaws.com/",
+							"protocol": "https",
+							"host": [
+								"sns",
+								"us-east-2",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								""
+							],
+							"query": [
+								{
+									"key": "Action",
+									"value": "Publish",
+									"disabled": true
+								},
+								{
+									"key": "TopicArn",
+									"value": "cv-test-sandbox-insidemaps-notifications",
+									"disabled": true
+								},
+								{
+									"key": "Message",
+									"value": "{ \"eventName\": \"FirstSpinTaken\",  \"eventDate\": \"2025-08-31T13:00:00.268Z\",  \"appVersion\": \"\", \"inspectionModelVersion\": \"\", \"projectId\": \"2FNDlsfBru\", \"propertyId\": \"mjALiTkhG8\", \"orderId\": \"2FNDlsfBru\", \"propertyAddress\": { \"street\": \"1506 Citrus Ct\", \"city\": “Cypress”, \"state\": “CA”,  \"zip\": “90630 },  \"organizationId\": \"Cj1Nvxx7Jk\", \"inspector\": {  \"id\": \"hDwU2FySlG\", \"email\": \"placeholder@test.com\",        \"firstName\": \"Placeholder Vendor\",  \"lastName\": \"\"  },  \"appTime\": “Sun Aug 31 2025 13:00:00 GMT+0000 (Coordinated Universal Time)\" }",
+									"disabled": true
+								},
+								{
+									"key": "Version",
+									"value": "210-03-31",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Generated from cURL: curl 'https://sns.us-east-1.amazonaws.com/' \\\n  -H 'Accept: */*' \\\n  -H 'Accept-Language: es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6' \\\n  -H 'Authorization: AWS4-HMAC-SHA256 Credential=ASIAVHJ6YUL5HF46XBQN/20250616/us-east-1/sns/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token;x-amz-user-agent, Signature=fcf4a2829a91f23dd59f3ea50c3ffbac7fadd55762cf3b915b93f3f0c41267a9' \\\n  -H 'Connection: keep-alive' \\\n  -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \\\n  -H 'DNT: 1' \\\n  -H 'Origin: https://us-east-1.console.aws.amazon.com' \\\n  -H 'Referer: https://us-east-1.console.aws.amazon.com/' \\\n  -H 'Sec-Fetch-Dest: empty' \\\n  -H 'Sec-Fetch-Mode: cors' \\\n  -H 'Sec-Fetch-Site: cross-site' \\\n  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\n  -H 'X-Amz-Content-Sha256: 16a880e44dd3baeb605560ebf32f369715a6487bbe6cd5c65a336a946c3c94ce' \\\n  -H 'X-Amz-Date: 20250616T185936Z' \\\n  -H 'X-Amz-User-Agent: aws-sdk-js/2.1692.0 promise' \\\n  -H 'X-Amzn-Trace-Id: Root=1-68506999-c4a033eb0ead818de9361a89;Sampled=1' \\\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\n  -H 'sec-ch-ua-mobile: ?0' \\\n  -H 'sec-ch-ua-platform: \"macOS\"' \\\n  -H 'x-amz-security-token: IQoJb3JpZ2luX2VjEHsaCXVzLWVhc3QtMSJGMEQCIF+im4anTal/AXk2f9Jbvy2QwqRRSKzTNVxEzbc6GrvOAiB9/+/j1Ehw7D8TdTPWjDzstxt2ryP0GL9oLyUNNH0W0yrvAwhkEAQaDDM1OTI5ODI3ODEzOCIMuI5Nxf41lZ90F0G4KswDbe+PW2EhCuWENElPrlWnCfE6K+vDN93EE322SkyrRAblouC3cnm62MlVEbd9yI8LoZwXmmF5CMrLaUM9HYj/K8ewSPv2fb5J6CtCwvdN1SHZRpjdiTBy+8dwmFeXWWmzZrwvqWOfaVP8zunQBbPmECBfRBxEUYZXqM91BUs019bldmTmfsVz7Os9qvq1dP7h29tDFBS2uCDdvDi5BBRe4QPqVlUM8oKeEH2AzjD9VjQpWzCzDBe58wSxAVOJvHwfvYG69Ysq9CQ2DJmQLsXMvVElp+FCxo89ojil7DHIJ9E67nzLtHeBJa3hX8j/nG1DOi8zj/PIix8+mShWBRqp4njYS0PvGh3Yx0oR6fFrckpa//asseWb+hLzNb8ZEyFisj0xbn/aulgCZwlSYNGiDI+FjNisSHUF01oSOoCyb1LQVYkkKkk8CO61i959m6FvGTo5VkVC8EP9+K3EZB7duTlqbYlyGPUwV0qLGG8K8gAIrQAB74UhpsNq1EisnX4tJOiiapTyAeYTOi3y0IkZBHpt9Ewnz7MOtH6+i8NCDt0ouEZQaoqvU4Og3JTM7wuKGBQ8xKt8Zm5LHbGQv9zZGgluf9lMxYjdCdFzdDCe0sHCBjqVAjYGkJWjeWtfyrtIdNAwpZmhyQ5kJyw8JGl2/bS2frpTpK1D8jrllXm+nc1qWkuGlBl/++r6pvk9vjryWcyQI2efBm68t8jFWdRYVHoQPWHDtTA3XuHIKx5uPqGU2uDQoCSLhXLun+8JL9VIrdMGodZlTi9vIyLtST6Nf94hdycu0KRq4JSG63AdWDkI+qTgb0YkoN+dqTv6lNTrIlqyC9Up4Yx72XCh4c+L+Rf6SHWtLrq+iMnaulf083zN6x5Wn3OeuPNqqbvBpK/PAwe5YF+LqgEdul1FKnY08m6tnKdPEJsKgfl87EQP/d9UiQCavX1QHbrmOp2NR2H0PFVfV4HgmClzkn5gCyk0OM7N4JYMLrUNnsc=' \\\n  --data-raw 'Action=Publish&Message=%7B%0A%0A%20%20%22__AttachedFileS3Pointer%22%3A%20%7B%0A%0A%20%20%20%20%22Key%22%3A%20%22JSONFileName%22%2C%0A%0A%20%20%20%20%22BucketName%22%3A%20%22cv-ENV-sandbox-event-data-publisher%22%2C%0A%0A%20%20%20%20%22SignedUrl%22%3A%20%22https%3A%2F%2Fcv-ENV-sandbox-event-data-publisher.s3.us-east-2.amazonaws.com%2FJSONFileName%22%0A%0A%20%20%7D%0A%0A%7D&MessageAttributes.entry.1.Name=EventName&MessageAttributes.entry.1.Value.DataType=String&MessageAttributes.entry.1.Value.StringValue=ProjectModelCompleted&TopicArn=arn%3Aaws%3Asns%3Aus-east-1%3A359298278138%3Acv-test-sandbox-insidemaps-notifications&Version=2010-03-31'"
+					},
+					"response": []
+				}
+			],
+			"id": "29689341-02da72b1-4322-4b68-9823-c21397922af9"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2cce9c5e-9b2d-41c6-a1d7-df7fad433b34",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "efe3dd82-f294-4ef4-b715-c9b54fb424f5",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "OrderInsideMapsID",
+			"value": ""
+		},
+		{
+			"key": "OrderInspectionID",
+			"value": ""
+		},
+		{
+			"key": "projectId",
+			"value": ""
+		},
+		{
+			"key": "propertyId",
+			"value": ""
+		},
+		{
+			"key": "inspectionId",
+			"value": ""
+		},
+		{
+			"key": "currentTime",
+			"value": ""
+		},
+		{
+			"key": "Stree",
+			"value": ""
+		}
+	]
+}

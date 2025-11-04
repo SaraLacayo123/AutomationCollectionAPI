@@ -1,0 +1,3896 @@
+{
+	"info": {
+		"_postman_id": "29689341-6f5307e2-b454-4ceb-90a6-1ad679988220",
+		"name": "CMP Acuity_Order Hybrid Creation TEST",
+		"description": "- Collection:\n    \n\nOrderCreation\n\n- Systems:\n    \n\nCMP Acuity\n\n- Description:\n    \n\nThis collection allows us to create orders in CMP Acuity without UI interaction.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Orders/Create",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8c4b1e43-828b-40b3-8f5c-3e4024977f12",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "34e479a8-3f26-4477-a873-692f30bd0a0c",
+						"exec": [
+							"//Capture the JSON Response\r",
+							"var jsonData = pm.response.json();\r",
+							"var orderId = pm.collectionVariables.get(\"OrderID\");\r",
+							"var orderItemId = pm.collectionVariables.get(\"OrderItemID\");\r",
+							" \r",
+							"//Run some quick validations and set OrderID and OrderItemID variables\r",
+							"pm.test(\"Check 'OrderID' value was created\", function () {    \r",
+							"    pm.expect(orderId).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check 'OrderItemID' is set\", function () {\r",
+							"    pm.expect(orderItemId).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"//Await to send the next Request\r",
+							"setTimeout(() => {\r",
+							"    postman.setNextRequest(\"Orders/Search/Data - Order Confirmed\");\r",
+							"}, 1000);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-5d60f25b-d7a4-44a5-8f50-005ffcd766d5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE3NDM0NDI2NTIsImV4cCI6MTc0MzQ0NjI1MiwiaXNzIjoiaHR0cHM6Ly9pZHMudGVzdC5jbGFzc3ZhbHVhdGlvbi5jb20iLCJhdWQiOlsiYXBwcmFpc2VybXAuYXBpIiwiaW50ZWxsaWdlbmNlLmRlc2t0b3AiLCJpbnRlbGxpZ2VuY2UucWMiLCJuZXhzeXMuYXBpIiwib3JkZXJzLmFwaSIsInByb3BlcnR5ZGF0YS5hcGkiLCJ1c2VyLmFwaSJdLCJjbGllbnRfaWQiOiJwb3N0bWFuX2RldmVsb3BfdGVzdCIsInN1YiI6IjY0YjU4OGFlOGEwOTM2MmRkZTQ3MDYwNiIsImF1dGhfdGltZSI6MTc0MzQ0MjY1MiwiaWRwIjoibG9jYWwiLCJuYW1lIjoianZlZ2EiLCJmaXJzdF9uYW1lIjoiSmVzc2ljYSIsImxhc3RfbmFtZSI6IlZlZ2EiLCJlbWFpbCI6Implc3NpY2EudmVnYUAzcGlsbGFyZ2xvYmFsLmNvbSIsImN2LmNvbm5lY3Rpb24iOiJDbGFzc1ZhbHVhdGlvbiIsInVzZXJUeXBlIjoiaW50ZXJuYWwiLCJyb2xlIjpbImVtcHR5IiwiWFBBTlNFIiwiVkFMVVRSVVNUIiwiVVNFUl9TVEFGRl9BRE1JTiIsIlNZU1RFTV9VU0VSIiwiU1lTVEVNX1NUQUZGIiwiU0NPUEVfVE9PTFMiLCJPUkRFUlNfRVhURVJOQUwiLCJORVhTWVMiLCJGTkMiLCJERVNLVE9QX0FQUFJPVkVSIiwiREFUQU1BU1RFUiIsIkNPTkZJRy1BQ0NFU1MiLCJDTC1TVVBQT1JUIiwiQ0wtT1BFUkFUSU9OIiwiQVBQUkFJU0VSX0FETUlOIiwiQURNSU4iXSwicGVybWlzc2lvbiI6WyJlbXB0eSIsImludmlzaW9uOmFjY2VzcyIsImRlc2t0b3A6YWNjZXNzIiwiZGVza3RvcDphcHByb3ZlciIsImRlc2t0b3A6ZWRpdC1vcmRlciIsImRlc2t0b3A6ZXhwb3J0LWRhdGEiLCJkZXNrdG9wOmZvcmNldW5sb2NrIiwiZGVza3RvcDpydWxlaGFuZGxlciIsImRlc2t0b3A6cWMtc2NhbiIsImRlc2t0b3A6cWMtZXNjYWxhdGlvbiIsImRlc2t0b3A6c2VhcmNoYWxsIiwiZGFzaGJvYXJkaHViOmFjY2VzcyIsImludGVsbGlnZW5jZTphY2Nlc3MiLCJpbnRlbGxpZ2VuY2U6cnVsZWhhbmRsZXIiLCJvcDphY2Nlc3MiLCJvcDpzZWFyY2hhbGwiLCJvcDplZGl0LW9yZGVyIiwib3A6YWRkLW9yZGVyIiwidW06YWNjZXNzIiwidW06YWRkLXVzZXIiLCJ1bTplZGl0LXVzZXIiLCJvcmRlcnM6YWNjZXNzIiwib3JkZXJzOm1hcHBlcnMiLCJvcmRlcnM6cHJvZHVjdHMiLCJpbnRlbGxpZ2VuY2U6ZGFzaGJvYXJkYWxsIiwieW91cmhvbWU6YWNjZXNzIiwiYXBwcmFpc2VybXA6YWNjZXNzIiwib2U6YWNjZXNzIiwiY29uZmlnOmFjY2VzcyIsInNjaGVkdWxlcjphY2Nlc3MiLCJkYXRhbWFzdGVyOmFjY2VzcyIsInByb3BlcnR5ZGF0YTphY2Nlc3MiLCJleHBvcnQ6YWNjZXNzIiwid29ya2ZpbGU6YWNjZXNzIiwidXNlcnByb2ZpbGU6YWNjZXNzIiwicHJvcGVydHlhbmFseXNpczphY2Nlc3MiLCJmbmM6ZXZlbnRzIiwibmV4c3lzOmV2ZW50cyIsInJlZGl0b3I6YWNjZXNzIiwibmV4c3lzOmFjY2VzcyIsIm5leHN5czpyZXRyeSIsInZhbHV0cnVzdDphY2Nlc3MiLCJ2YWx1dHJ1c3Q6cmV0cnkiLCJ4cGFuc2U6YWNjZXNzIiwieHBhbnNlOnJldHJ5IiwidW06ZWRpdC1yb2xlIiwidGltZXpvbmVzOmFjY2VzcyIsImZuYzphY2Nlc3MiLCJmbmM6cmV0cnkiLCJldm86YWNjZXNzIiwiZXZvOnJldHJ5IiwidmFsdWVsaW5rOmFjY2VzcyIsInZhbHVlbGluazpyZXRyeSIsImNhbHl4OmFjY2VzcyIsImNhbHl4OnJldHJ5IiwibWVyaWRpYW5saW5rOmFjY2VzcyIsIm1lcmlkaWFubGluazpyZXRyeSIsImNvbm5leGlvbnM6YWNjZXNzIiwiY29ubmV4aW9uczpyZXRyeSIsImxlbmRpbmdxYjphY2Nlc3MiLCJsZW5kaW5ncWI6cmV0cnkiLCJ2YWx1dHJ1c3Q6ZXZlbnRzIiwieHBhbnNlOmV2ZW50cyJdLCJzY29wZSI6WyJvcGVuaWQiLCJhcHByYWlzZXJtcC5hcGkiLCJpbnRlbGxpZ2VuY2UuZGVza3RvcCIsImludGVsbGlnZW5jZS5xYyIsIm5leHN5cy5hcGkiLCJvcmRlcnMuYXBpIiwicHJvcGVydHlkYXRhLmFwaSIsInVzZXIuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInBhc3N3b3JkIl19.IUcDGZkjMIPtUhUnC9sqtPlNBmO1sHq3tKf61bIW38HIA5mIOc7QjMVtarxvV2HjNWlzKj_gY5WzCz22RavdY-mpaREV61jnljFcQKYkIjigTS_hDw6ltPdNDkOsHGynLsVE4Mv7YKvc0nxEQmJAIXjOZtL1zqnpqC0TlVy_U0Qgke8OjYVggLGPJVqmDci4OswHBV-RetGWK67s9IsL1OZ7LmFUaQ-a4_R47GGpK4CahmIBQKBj7FtUAF-JVFlnFDFg0lQVpwr8H1kCD6b5guTsWpn5xgslAzXbxbKCGJAVWs1eu1ocso5YENAKhzIls0Yov45P3O8aSqjEyNIQxg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ReferrerUrl",
+							"value": "https://{{acuityBaseURL}}/Orders/Pipeline",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.BatchName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanSystem",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ClientID",
+							"value": "{{ClientID}}",
+							"type": "text",
+							"description": "Client: Thornhill Corporation 56"
+						},
+						{
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "{{ClientBranchID}}",
+							"type": "text",
+							"description": "Branch: Root Branch"
+						},
+						{
+							"key": "OrderItemEdit.ProductID",
+							"value": "{{ProductID}}",
+							"type": "text",
+							"description": "Product: PDA(Automation)"
+						},
+						{
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "{{BillingTypeID}}",
+							"type": "text",
+							"description": "Billing Type: INVOICE"
+						},
+						{
+							"key": "OrderItemEdit.ClientFee",
+							"value": "{{ClientFee}}",
+							"type": "text",
+							"description": "Base Client Fee: 3880.00"
+						},
+						{
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.InvestorCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "{{PropertyTypeID}}",
+							"type": "text",
+							"description": "Property Type: 2"
+						},
+						{
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "{{OccupancyTypeID}}",
+							"type": "text",
+							"description": "Occupancy: TENANT"
+						},
+						{
+							"key": "OrderItemEdit.Address1",
+							"value": "{{$randomInt}} {{Address1}}",
+							"type": "text",
+							"description": "Address 1: Jackson St"
+						},
+						{
+							"key": "OrderItemEdit.Address2",
+							"value": "{{Address2}}",
+							"type": "text",
+							"description": "Address 2"
+						},
+						{
+							"key": "OrderItemEdit.PostalCode",
+							"value": "{{PostalCode}}",
+							"type": "text",
+							"description": "Postal Code: 80206"
+						},
+						{
+							"key": "OrderItemEdit.City",
+							"value": "{{City}}",
+							"type": "text",
+							"description": "City: Denver"
+						},
+						{
+							"key": "OrderItemEdit.State",
+							"value": "{{State}}",
+							"type": "text",
+							"description": "State: CO"
+						},
+						{
+							"key": "OrderItemEdit.FIPS",
+							"value": "08031",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.APN",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Latitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Longitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Region",
+							"value": "{{Region}}",
+							"type": "text",
+							"description": "Region: URBAN"
+						},
+						{
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts.Index",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ContactTypeID",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].MiddleName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].SocialSecurityNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Fax",
+							"value": "",
+							"type": "text",
+							"description": "(700) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Email",
+							"value": "{{$randomEmail}}",
+							"type": "text",
+							"description": "Or use a random email {{$randomEmail}} "
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Title",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ParentID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ContactTypeDescription",
+							"value": "Borrower",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].FirstName",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].LastName",
+							"value": "BorrowerA1",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].WorkPhone",
+							"value": "",
+							"type": "text",
+							"description": "(900) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].HomePhone",
+							"value": "",
+							"type": "text",
+							"description": "(800) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].MobilePhone",
+							"value": "",
+							"type": "text",
+							"description": "(600) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "{{LoanPurposeID}}",
+							"type": "text",
+							"description": "Loan Purpose: ACQUISITION"
+						},
+						{
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "{{LoanTypeID}}",
+							"type": "text",
+							"description": "Loan Type ID: JUMBO"
+						},
+						{
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "11000 {{$randomInt}} ",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "{{LoanAmount}}",
+							"type": "text",
+							"description": "Loan Amount: 1173401.00"
+						},
+						{
+							"key": "OrderItemEdit.LienPosition",
+							"value": "{{LienPosition}}",
+							"type": "text",
+							"description": "Lien Position: 1"
+						},
+						{
+							"key": "OrderItemEdit.SalePrice",
+							"value": "{{SalePrice}}",
+							"type": "text",
+							"description": "Sale Price: 0.00"
+						},
+						{
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanClassification",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DUReferenceNumbe",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": "handling instructions",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": "property access instructions",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LockboxCode",
+							"value": "0000",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.RushOrder",
+							"value": "{{RushOrder}}",
+							"type": "text",
+							"description": "Rush Order (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "{{BorrowerDelay}}",
+							"type": "text",
+							"description": "Borrower Delay (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "{{ComplexProperty}}",
+							"type": "text",
+							"description": "Complex Property (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "{{FamousBorrower}}",
+							"type": "text",
+							"description": "Famouse Borrower (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "{{SidebySideOrder}}",
+							"type": "text",
+							"description": "Side-by-Side Order (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{acuityBaseURL}}/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"{{acuityBaseURL}}"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Create Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8c4b1e43-828b-40b3-8f5c-3e4024977f12",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "34e479a8-3f26-4477-a873-692f30bd0a0c",
+						"exec": [
+							"//Capture the JSON Response\r",
+							"var jsonData = pm.response.json();\r",
+							"var orderId = pm.collectionVariables.get(\"OrderID\");\r",
+							"var orderItemId = pm.collectionVariables.get(\"OrderItemID\");\r",
+							" \r",
+							"//Run some quick validations and set OrderID and OrderItemID variables\r",
+							"pm.test(\"Check 'OrderID' value was created\", function () {    \r",
+							"    pm.expect(orderId).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check 'OrderItemID' is set\", function () {\r",
+							"    pm.expect(orderItemId).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"//Await to send the next Request\r",
+							"setTimeout(() => {\r",
+							"    postman.setNextRequest(\"Orders/Search/Data - Order Confirmed\");\r",
+							"}, 1000);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-5a54d3d0-2be0-4595-b58c-72d132613792",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "ReferrerUrl",
+							"value": "https://{{acuityBaseURL}}/Orders/Pipeline",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.BatchName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanSystem",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ClientID",
+							"value": "{{ClientID}}",
+							"type": "text",
+							"description": "Client: Thornhill Corporation 56"
+						},
+						{
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "{{ClientBranchID}}",
+							"type": "text",
+							"description": "Branch: Root Branch"
+						},
+						{
+							"key": "OrderItemEdit.ProductID",
+							"value": "{{ProductID}}",
+							"type": "text",
+							"description": "Product: TP"
+						},
+						{
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "{{CreditCarPayment}}",
+							"type": "text",
+							"description": "Billing Type: INVOICE"
+						},
+						{
+							"key": "OrderItemEdit.ClientFee",
+							"value": "{{ClientFee}}",
+							"type": "text",
+							"description": "Base Client Fee: 3880.00"
+						},
+						{
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.InvestorCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "{{PropertyTypeID}}",
+							"type": "text",
+							"description": "Property Type: 2"
+						},
+						{
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "{{OccupancyTypeID}}",
+							"type": "text",
+							"description": "Occupancy: TENANT"
+						},
+						{
+							"key": "OrderItemEdit.Address1",
+							"value": "{{$randomInt}} {{Address1}}",
+							"type": "text",
+							"description": "Address 1: Jackson St"
+						},
+						{
+							"key": "OrderItemEdit.Address2",
+							"value": "{{Address2}}",
+							"type": "text",
+							"description": "Address 2"
+						},
+						{
+							"key": "OrderItemEdit.PostalCode",
+							"value": "{{PostalCode}}",
+							"type": "text",
+							"description": "Postal Code: 80206"
+						},
+						{
+							"key": "OrderItemEdit.City",
+							"value": "{{City}}",
+							"type": "text",
+							"description": "City: Denver"
+						},
+						{
+							"key": "OrderItemEdit.State",
+							"value": "{{State}}",
+							"type": "text",
+							"description": "State: CO"
+						},
+						{
+							"key": "OrderItemEdit.FIPS",
+							"value": "08031",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.APN",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Latitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Longitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Region",
+							"value": "{{Region}}",
+							"type": "text",
+							"description": "Region: URBAN"
+						},
+						{
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts.Index",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ContactTypeID",
+							"value": "11",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].MiddleName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].SocialSecurityNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Fax",
+							"value": "",
+							"type": "text",
+							"description": "(700) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Email",
+							"value": "{{$randomEmail}}",
+							"type": "text",
+							"description": "Or use a random email {{$randomEmail}} "
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].Title",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ParentID",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].ContactTypeDescription",
+							"value": "Borrower",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].FirstName",
+							"value": "Test",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].LastName",
+							"value": "BorrowerA1",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].WorkPhone",
+							"value": "",
+							"type": "text",
+							"description": "(900) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].HomePhone",
+							"value": "",
+							"type": "text",
+							"description": "(800) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.Contacts[0].MobilePhone",
+							"value": "",
+							"type": "text",
+							"description": "(600) 000-0000"
+						},
+						{
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "{{LoanPurposeID}}",
+							"type": "text",
+							"description": "Loan Purpose: ACQUISITION"
+						},
+						{
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "{{LoanTypeID}}",
+							"type": "text",
+							"description": "Loan Type ID: JUMBO"
+						},
+						{
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "11000{{$randomInt}}",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "{{LoanAmount}}",
+							"type": "text",
+							"description": "Loan Amount: 1173401.00"
+						},
+						{
+							"key": "OrderItemEdit.LienPosition",
+							"value": "{{LienPosition}}",
+							"type": "text",
+							"description": "Lien Position: 1"
+						},
+						{
+							"key": "OrderItemEdit.SalePrice",
+							"value": "{{SalePrice}}",
+							"type": "text",
+							"description": "Sale Price: 0.00"
+						},
+						{
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanClassification",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.DUReferenceNumbe",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": "handling instructions",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": "property access instructions",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.LockboxCode",
+							"value": "0000",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.RushOrder",
+							"value": "{{RushOrder}}",
+							"type": "text",
+							"description": "Rush Order (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "{{BorrowerDelay}}",
+							"type": "text",
+							"description": "Borrower Delay (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "{{ComplexProperty}}",
+							"type": "text",
+							"description": "Complex Property (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "{{FamousBorrower}}",
+							"type": "text",
+							"description": "Famouse Borrower (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "{{SidebySideOrder}}",
+							"type": "text",
+							"description": "Side-by-Side Order (checkbox) false/true"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://{{acuityBaseURL}}/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"{{acuityBaseURL}}"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Search/Data - Order Confirmed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7e533674-56a2-4ac4-bc6c-54823288316a",
+						"exec": [
+							"var jsonData = pm.response.json();                                  //Capture the JSON Response\r",
+							"var orderData = jsonData.rows                                       //Extract Order Data\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check that Search feature retireves Search data\", function () {    \r",
+							"    pm.expect(jsonData.total).eq(1);\r",
+							"    pm.expect(jsonData.records).eq(1);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Check the Order was created\", function () { \r",
+							"    var orderKey = pm.collectionVariables.get('OrderID');\r",
+							"    pm.expect(orderData[0].OrderID).eql(orderKey);\r",
+							"    console.info(\"Order Created with OrderID: \"+orderKey);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "70c5aad7-89cb-4712-9bd7-591172a844d5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-57e71d25-e66c-4485-85e2-778368fb61a3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "{{acuityBaseURL}}",
+						"disabled": true
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01",
+						"disabled": true
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9",
+						"disabled": true
+					},
+					{
+						"key": "origin",
+						"value": "https://{{acuityBaseURL}}",
+						"disabled": true
+					},
+					{
+						"key": "referer",
+						"value": "https://{{acuityBaseURL}}/Orders/Search",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\"",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\"",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin",
+						"disabled": true
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"loadSavedData\": false,\r\n    \"nd\": \"\", \r\n    \"page\": 1,\r\n    \"rows\": 500,\r\n    \"sidx\": \"\",\r\n    \"sord\": \"asc\",\r\n    \"_search\": \"false\",\r\n    \"searchCriteria\": {\r\n        \"Address\": \"\",\r\n        \"BorrowerLastName\": \"\",\r\n        \"BulkOrderID\": \"\",\r\n        \"City\": \"\",\r\n        \"ClientRequestedDueDate\": \"\",\r\n        \"ClientRequestedDueDateTo\": \"\",\r\n        \"CompletedDate\": \"\",\r\n        \"CompletedDateTo\": \"\",\r\n        \"DateRequired\": \"\",\r\n        \"Description\": \"\",\r\n        \"Filters\": [],\r\n        \"InvestorCode\": \"\",\r\n        \"LoanClosingDate\": \"\",\r\n        \"LoanClosingDateTo\": \"\",\r\n        \"LoanNumber\": \"\",\r\n        \"OnlyDelinquentItems\": false,\r\n        \"OnlyNonDelinquentItems\": false,\r\n        \"OnlyOpenOrders\": false,\r\n        \"OnlyPendingComments\": false,\r\n        \"OrderDate\": \"\",\r\n        \"OrderDateTo\": \"\",\r\n        \"OrderID\": \"{{OrderID}}.{{OrderItemID}}\",\r\n        \"OrderItemQueryID\": \"0\",\r\n        \"PartnerNumber\": \"\",\r\n        \"ServiceRepUser\": \"\",\r\n        \"VendorID\": \"\",\r\n        \"VendorName\": \"\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{acuityBaseURL}}/Orders/Search/Data",
+					"protocol": "https",
+					"host": [
+						"{{acuityBaseURL}}"
+					],
+					"path": [
+						"Orders",
+						"Search",
+						"Data"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "29689341-dcf18280-6882-433f-a16a-53933987e9f3",
+					"name": "Orders/Search/Data - Order Confirmed example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authority",
+								"value": "{{acuityBaseURL}}",
+								"disabled": true
+							},
+							{
+								"key": "accept",
+								"value": "application/json, text/javascript, */*; q=0.01",
+								"disabled": true
+							},
+							{
+								"key": "accept-language",
+								"value": "en-US,en;q=0.9",
+								"disabled": true
+							},
+							{
+								"key": "origin",
+								"value": "https://{{acuityBaseURL}}",
+								"disabled": true
+							},
+							{
+								"key": "referer",
+								"value": "https://{{acuityBaseURL}}/Orders/Search",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0",
+								"disabled": true
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\"",
+								"disabled": true
+							},
+							{
+								"key": "sec-fetch-dest",
+								"value": "empty",
+								"disabled": true
+							},
+							{
+								"key": "sec-fetch-mode",
+								"value": "cors",
+								"disabled": true
+							},
+							{
+								"key": "sec-fetch-site",
+								"value": "same-origin",
+								"disabled": true
+							},
+							{
+								"key": "x-requested-with",
+								"value": "XMLHttpRequest",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"loadSavedData\": false,\r\n    \"nd\": \"\", \r\n    \"page\": 1,\r\n    \"rows\": 500,\r\n    \"sidx\": \"\",\r\n    \"sord\": \"asc\",\r\n    \"_search\": \"false\",\r\n    \"searchCriteria\": {\r\n        \"Address\": \"\",\r\n        \"BorrowerLastName\": \"\",\r\n        \"BulkOrderID\": \"\",\r\n        \"City\": \"\",\r\n        \"ClientRequestedDueDate\": \"\",\r\n        \"ClientRequestedDueDateTo\": \"\",\r\n        \"CompletedDate\": \"\",\r\n        \"CompletedDateTo\": \"\",\r\n        \"DateRequired\": \"\",\r\n        \"Description\": \"\",\r\n        \"Filters\": [],\r\n        \"InvestorCode\": \"\",\r\n        \"LoanClosingDate\": \"\",\r\n        \"LoanClosingDateTo\": \"\",\r\n        \"LoanNumber\": \"\",\r\n        \"OnlyDelinquentItems\": false,\r\n        \"OnlyNonDelinquentItems\": false,\r\n        \"OnlyOpenOrders\": false,\r\n        \"OnlyPendingComments\": false,\r\n        \"OrderDate\": \"\",\r\n        \"OrderDateTo\": \"\",\r\n        \"OrderID\": \"{{OrderID}}.{{OrderItemID}}\",\r\n        \"OrderItemQueryID\": \"0\",\r\n        \"PartnerNumber\": \"\",\r\n        \"ServiceRepUser\": \"\",\r\n        \"VendorID\": \"\",\r\n        \"VendorName\": \"\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{acuityBaseURL}}/Orders/Search/Data",
+							"protocol": "https",
+							"host": [
+								"{{acuityBaseURL}}"
+							],
+							"path": [
+								"Orders",
+								"Search",
+								"Data"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 06 Dec 2024 16:27:33 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1940"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "public, no-store, max-age=0, s-maxage=0"
+						},
+						{
+							"key": "Expires",
+							"value": "Fri, 06 Dec 2024 16:27:33 GMT"
+						},
+						{
+							"key": "Last-Modified",
+							"value": "Fri, 06 Dec 2024 16:27:33 GMT"
+						},
+						{
+							"key": "Vary",
+							"value": "*"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-AspNetMvc-Version",
+							"value": "5.2"
+						},
+						{
+							"key": "X-AspNet-Version",
+							"value": "4.0.30319"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=31536000; includeSubDomains; preload"
+						},
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'self' *.classvaluation.com *.google.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' ajax.googleapis.com oss.maxcdn.com navoss.maxcdn.com code.jquery.com netdna.bootstrapcdn.com cdn.elliemae.io cdn.jsdelivr.net r.bing.com www.bing.com ecn.dev.virtualearth.net; style-src 'self' 'unsafe-inline' fonts.gstatic.com fonts.googleapis.com netdna.bootstrapcdn.com r.bing.com; font-src 'self' data: fonts.gstatic.com fonts.googleapis.com; connect-src 'self' maps.googleapis.com; img-src 'self' data: blob: *.classvaluation.com classvaluation.com connect.clearvalueconsulting.com placekitten.com www.gravatar.com demos.telerik.com vendor.towngateappraisals.com vendor.valuationconnect.com *.wsimg.com; frame-src 'self' www.bing.com *.clearvalueconsulting.com;"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"total\": 1,\n    \"page\": 1,\n    \"records\": 1,\n    \"rows\": [\n        {\n            \"OrderKey\": \"1124252.1\",\n            \"OrderID\": 1124252,\n            \"OrderItemID\": 1,\n            \"ProductID\": 288,\n            \"ProductName\": \"Automat Digital TP\",\n            \"ProductTypeID\": \"DESKTOP\",\n            \"ProductTypeName\": \"Desktop\",\n            \"ProductWeight\": 0,\n            \"LoanTypeID\": \"CONV\",\n            \"LoanPurposeID\": \"Purchase\",\n            \"LoanNumber\": \"4654209\",\n            \"FHACaseNumber\": \"\",\n            \"Borrower\": \"test test\",\n            \"ClientID\": 56172,\n            \"ClientName\": \"Testing Digital Orders Cool Client \",\n            \"ClientCalculatedAlternativeName\": \"Testing Digital Orders Cool Client \",\n            \"BranchID\": 1024,\n            \"BranchName\": \"Digital Orders Automation Branch\",\n            \"VendorID\": 0,\n            \"VendorName\": \"\",\n            \"VendorStatusDescription\": \"\",\n            \"VendorFirmName\": \"\",\n            \"ServiceRepUser\": \"\",\n            \"ServiceRepUserName\": \"\",\n            \"OrderDate\": \"/Date(1733499440140)/\",\n            \"OrderItemDate\": \"/Date(1733499443103)/\",\n            \"VendorDueDate\": \"/Date(1734017843103)/\",\n            \"CompletedDate\": null,\n            \"InspectedDate\": null,\n            \"RequiredByDate\": \"/Date(1734017843103)/\",\n            \"RequiredByDatePerSLA\": \"/Date(1734017843103)/\",\n            \"LoanClosingDate\": null,\n            \"ClientRequestedDueDate\": null,\n            \"LastUpdatedDate\": \"/Date(1733499524053)/\",\n            \"SubmittedDate\": null,\n            \"FollowUpDate\": null,\n            \"RushOrder\": false,\n            \"Billed\": false,\n            \"Upgraded\": false,\n            \"Cancelled\": false,\n            \"DoNotRelease\": false,\n            \"LastMilestoneID\": 0,\n            \"LastMilestone\": \"Order Confirmed\",\n            \"ClientFee\": 100,\n            \"VendorFee\": 0,\n            \"AdjustedClientFee\": 100,\n            \"AdjustedVendorFee\": 0,\n            \"QueueID\": 60,\n            \"QueueName\": \"Awaiting Manual Assignment\",\n            \"QueueAbbreviation\": \"To Assign\",\n            \"QueueWarningMinutes\": 1440,\n            \"QueueDuration\": 48,\n            \"Address\": \"372 Citrus Ct\",\n            \"City\": \"Cypress\",\n            \"State\": \"CA\",\n            \"PostalCode\": \"90630\",\n            \"County\": \"Orange\",\n            \"Latitude\": null,\n            \"Longitude\": null,\n            \"Proximity\": null,\n            \"ClientRefNumber\": \"\",\n            \"VendorRefNumber\": \"\",\n            \"HoldReason\": \"\",\n            \"EscalationReason\": \"\",\n            \"EscalationReasonID\": \"\",\n            \"EscalationComment\": \"\",\n            \"Overdue\": false,\n            \"UnhandledComment\": true,\n            \"VirtualQueueID\": null,\n            \"VirtualQueueDescription\": \"\",\n            \"VirtualQueueAbbreviation\": \"\",\n            \"PipeLineIndicators\": \"\",\n            \"AppraisedValue\": 0,\n            \"ContingencyDate\": null,\n            \"ZoneID\": null,\n            \"CUScore\": null,\n            \"AMCName\": \"Test AMC\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Orders/Assign - CHECK!!!",
+			"id": "29689341-6d36c7f8-8ced-40ed-910c-e3d84cdfcdec",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=unxxehqz0ydie5zzxzxmaj2d; __RequestVerificationToken=uYV_e8q3JXxYlPjttCPB291txNFxQ8pIFwpGTSuz-CwCkEixz5Srpc5cV8tdLRnF7hfkIGZ_qlxb65CF4hDQofFUEgNQYlwgUX6dcGHKlWY1; .ASPXAUTH=E0A47C2C2909C973A198DC489D3A58AE48171B66AEB61A13DF2F870CC135E30EE47B64F0D6E2A7A524483BFC11387765224CCD039CD1A89B45897048A3FE8ADF3D49151F79AF1B324B70E85A082D29003E494EC575A346A07EA35EEBCFD09385"
+					},
+					{
+						"key": "priority",
+						"value": "u=0, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.develop.sandbox.classvaluation.com/Orders/1098554/Items/1/Vendors/105154/Confirm?Proximity=118.93&Experience=10.00&Volume=88.90&OffersProduct=true&SearchByType=false&rankNo=6&Fee=350.00&ReferrerUrl=https://cmp-staff.develop.sandbox.classvaluation.com/Orders/1098554/Items/1/Dashboard"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "document"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "navigate"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "upgrade-insecure-requests",
+						"value": "1"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-fetch-user",
+						"value": "?1"
+					},
+					{
+						"key": "Referer",
+						"value": "https://cmp-staff.develop.sandbox.classvaluation.com/Orders/1098554/Items/1/Vendors/105154/Confirm?Proximity=118.93&Experience=10.00&Volume=88.90&OffersProduct=true&SearchByType=false&rankNo=6&Fee=350.00&ReferrerUrl=https://cmp-staff.develop.sandbox.classvaluation.com/Orders/1098554/Items/1/Dashboard"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "if-modified-since",
+						"value": "Fri, 26 Apr 2024 20:46:28 GMT"
+					},
+					{
+						"key": "if-none-match",
+						"value": "\"0ea93cf1a98da1:0\""
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.develop.sandbox.classvaluation.com"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "viewDateFeeChange",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "Details.VendorFee",
+							"value": "350.00"
+						},
+						{
+							"type": "text",
+							"key": "Details.CompletionDate",
+							"value": "04/29/2024 8:00 AM"
+						},
+						{
+							"type": "text",
+							"key": "Details.MinFeeJustificationComment",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "viewAccessInstructions",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "Details.CommentsToVendors",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "viewJustification",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "Details.JustificationComment",
+							"value": "test - The selected vendor, JM Vendor, has been practicing since 4/1/2000, is 118.93 miles from the subject property, and has completed 10.00 similar products in this area.++ASSIGNMENT JUSTIFICATION++"
+						},
+						{
+							"type": "text",
+							"key": "viewNearbyOrders",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "Details.OrderID",
+							"value": "1098554"
+						},
+						{
+							"type": "text",
+							"key": "Details.OrderItemID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "Details.VendorID",
+							"value": "105154"
+						},
+						{
+							"type": "text",
+							"key": "Details.VendorDueDate",
+							"value": "4/29/2024 8:00:00 AM"
+						},
+						{
+							"type": "text",
+							"key": "Details.OriginalVendorFee",
+							"value": "350"
+						},
+						{
+							"type": "text",
+							"key": "Details.SearchByType",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "Details.OffersProduct",
+							"value": "True"
+						},
+						{
+							"type": "text",
+							"key": "Details.ServiceAreaProductFee",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "Details.AutoAssignApproved",
+							"value": "True"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.develop.sandbox.classvaluation.com/Orders/1098554/Items/1/Dashboard",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"develop",
+						"sandbox",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1098554",
+						"Items",
+						"1",
+						"Dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Available Order/ExtendDueDate - CHECK!!!",
+			"id": "29689341-0c887bb5-5b12-4154-81b6-84ed2ad4c7b5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=v3efsbqkxqhhtfnksxq4g20b; __RequestVerificationToken=vgaUzRqlwEtAnUPt0X_ZVsDXsxMzPQZ1qnfo9kl6T0m8DYsvzPQf21F1-ByeyQLZRKMgwyMU89ObpPFzhQcosvX-VcHwXTwXtLLVFuXe0eA1; .ASPXAUTH=A274E7A43CE3BAB8F54E1F83A2F23C8FC2FA5A885A00886FD423EF559B414256B0B509177B847431C5F1654E94E6B4745FB5428E0D737C9DBF1EE3E855409D6B9EE376752C79848A7E687716790AFAACB021F520D06D40051EA19EE4D5400B82"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/1102574/Items/1/Dashboard"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[{\"DueDateType\":\"CLIENT\",\"RevisedDueDate\":\"07/31/2024\",\"ReasonCode\":\"Complex - Property Type\",\"ReasonComment\":\"\",\"ApprovalRequired\":false,\"RushFee\":\"\"},{\"DueDateType\":\"VENDOR\",\"RevisedDueDate\":\"07/31/2024\",\"ReasonCode\":\"Complex - Property Type\",\"ReasonComment\":\"\",\"RushFee\":\"\"}]"
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102574/Items/1/UserActions/ExtendDueDate",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102574",
+						"Items",
+						"1",
+						"UserActions",
+						"ExtendDueDate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/ExtendDueDates - CHECK!!",
+			"id": "29689341-4bee9f29-2235-4239-9758-fb359af8e080",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com",
+						"disabled": true
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/1102544/Items/1/Dashboard",
+						"disabled": true
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"DueDateType\": \"CLIENT\",\r\n        \"RevisedDueDate\": \"07/31/2024\",\r\n        \"ReasonCode\": \"Distance\",\r\n        \"ReasonComment\": \"\",\r\n        \"ApprovalRequired\": false,\r\n        \"RushFee\": \"\"\r\n    },\r\n    {\r\n        \"DueDateType\": \"VENDOR\",\r\n        \"RevisedDueDate\": \"07/31/2024\",\r\n        \"ReasonCode\": \"Distance\",\r\n        \"ReasonComment\": \"\",\r\n        \"RushFee\": \"\"\r\n    }\r\n]"
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1101854/Items/1/UserActions/ExtendDueDate",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1101854",
+						"Items",
+						"1",
+						"UserActions",
+						"ExtendDueDate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/ChangeDueDates - CHECK!!!",
+			"id": "29689341-a87b609b-b288-41c0-8381-8481c99fd4ae",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=5joz35jx4i4wqiukj4luzfru; __RequestVerificationToken=9EFkfW4RBgiXAqZHpS_MBnq2osnQVqTT2vwxq525VAsK3otlWURne9W-3Ai3H3-LC5NaUI3Ycb6mwGXZ1ntaJxIAKCKxmYEepjzfcZSvIJY1; .ASPXAUTH=67B1D77785AE4D6B8E84DAFAB9F7C93A1B23B0550784E9615E16767A1191C0F79B9E99A03EFD9F2FC4939F488B25F1191D8982E534ADCE79017D4B75BA51674759053ECB4CC9E124464CCE1F5EAF4C8DDF6A0AE560F375025ED937A426AA82B7"
+					},
+					{
+						"key": "priority",
+						"value": "u=0, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/1102268/Items/1/Dashboard"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"DueDateType\": \"CLIENT\",\r\n        \"RevisedDueDate\": \"06/05/2024\",\r\n        \"ReasonCode\": \"Distance\",\r\n        \"ReasonComment\": \"\",\r\n        \"ApprovalRequired\": false,\r\n        \"RushFee\": \"\"\r\n    },\r\n    {\r\n        \"DueDateType\": \"VENDOR\",\r\n        \"RevisedDueDate\": \"06/06/2024\",\r\n        \"ReasonCode\": \"Distance\",\r\n        \"ReasonComment\": \"\",\r\n        \"RushFee\": \"\"\r\n    }\r\n]"
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102268/Items/1/ClientVendorDueDates?_=1714505716047",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102268",
+						"Items",
+						"1",
+						"ClientVendorDueDates"
+					],
+					"query": [
+						{
+							"key": "_",
+							"value": "1714505716047"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/ScheduleAppointment",
+			"id": "29689341-7a1af509-7d04-4182-a59b-619354626cc3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "host",
+						"value": "cmp-staff.test.classvaluation.com"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "OrderItemAppointmentEdit.ActualApptTime",
+							"value": "5/7/2024 3:40 PM"
+						},
+						{
+							"key": "OrderItemAppointmentEdit.OrderID",
+							"value": "1102790"
+						},
+						{
+							"key": "OrderItemAppointmentEdit.OrderItemID",
+							"value": "1"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102790/Items/1/UserActions/ScheduleAppointment",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102790",
+						"Items",
+						"1",
+						"UserActions",
+						"ScheduleAppointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/ConfirmAppointment",
+			"id": "29689341-f9ccf537-7b6a-4c75-93a2-6b3666243430",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "host",
+						"value": "cmp-staff.test.classvaluation.com"
+					}
+				],
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102790/Items/1/UserActions/ConfirmAppointment",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102790",
+						"Items",
+						"1",
+						"UserActions",
+						"ConfirmAppointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/ConditionalAccept (consulting)",
+			"id": "29689341-867fb287-7ee8-44f7-80b7-e1f1bbebc783",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "host",
+						"value": "cmp-staff.test.classvaluation.com"
+					}
+				],
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102754/Items/1/Assignments/ConditionalAccept/Data?_search=false&nd=1715194633673&rows=-1&page=1&sidx=&sord=asc",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102754",
+						"Items",
+						"1",
+						"Assignments",
+						"ConditionalAccept",
+						"Data"
+					],
+					"query": [
+						{
+							"key": "_search",
+							"value": "false"
+						},
+						{
+							"key": "nd",
+							"value": "1715194633673"
+						},
+						{
+							"key": "rows",
+							"value": "-1"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "sidx",
+							"value": ""
+						},
+						{
+							"key": "sord",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Accept conditions",
+			"id": "29689341-d1eb7076-2f09-4fb7-8775-957959c40643",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "host",
+						"value": "cmp-staff.test.classvaluation.com"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "condVendorLicenseID",
+							"value": "72"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/1102988/Items/1/UserActions/Accept",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"1102988",
+						"Items",
+						"1",
+						"UserActions",
+						"Accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Create without Contact Information",
+			"id": "29689341-c4525f4f-de9d-4a7b-b201-f5e8a5cfefed",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "cookie",
+						"value": "ASP.NET_SessionId=hh2n42rfld4quaoya1iv12qz; .ASPXAUTH=4B4F5F370698A73313773CF932FB58487A5B3D294C1E2EB84EB14CDA6851AD70F9EA1315A14D1F9DA762A22FF44E19E66535155DDD384FE89FF4537F6D95F73FE17607F257B59A0673D019D116690963745F13FE0F1AF27A3B255B9D572830AF"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/Create"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"124\", \"Google Chrome\";v=\"124\", \"Not-A.Brand\";v=\"99\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "ReferrerUrl",
+							"value": "https://cmp-staff.test.classvaluation.com/Account/Logon?ReturnUrl=%2fOrders%2fCreate"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BatchName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanSystem",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientID",
+							"value": "56130"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "1016"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ProductID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "INVOICE"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientFee",
+							"value": "85.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.InvestorCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "VACANT"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address1",
+							"value": "1010 Jackson St"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PostalCode",
+							"value": "80206"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.City",
+							"value": "Denver"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.State",
+							"value": "CO"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FIPS",
+							"value": "08031"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.APN",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Latitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Longitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Region",
+							"value": "URBAN"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "ACQUISITION"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "ACQUISITION"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "11003005"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LienPosition",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SalePrice",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClassification",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DUReferenceNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockboxCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RushOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/Cancel",
+			"id": "29689341-974ccdd8-4a76-4ac2-95f7-0bd295ee47da",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9,es-US;q=0.8,es;q=0.7"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Cookie",
+						"value": "ASP.NET_SessionId=hfqjs4inrhiaeehav5knbglz; __RequestVerificationToken=8Py6BK1Yy6O7znigclrWuFqGNSNzUmzDjTBQe7ptvb-Qf_4PqHThk3qOnqOg71ctCPe41OSG_y52U34h4GM9rn02Ch_tf33TTOg_KiF49-U1; .ASPXAUTH=189099BA5998563EB0EC33314131C3121911FA2CCE70B68A03FA72666EFF06D5BA04752DDD3FACA05F57AD232E62E39FE822394EF040E4037D54866F56F6FCBF5BB485006687A9FC2446DC0DAFF08D1326FA1A4BFF10394C34A062A36AE3E387"
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "Origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "Referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/1103900/Items/1/Dashboard"
+					},
+					{
+						"key": "Sec-Fetch-Dest",
+						"value": "empty"
+					},
+					{
+						"key": "Sec-Fetch-Mode",
+						"value": "cors"
+					},
+					{
+						"key": "Sec-Fetch-Site",
+						"value": "same-origin"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"125\", \"Chromium\";v=\"125\", \"Not.A/Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cancelInfo\":{\"OrderKeys\":[\"1104404.1\"],\"Reason\":\"ASSIGNED-TO-ANOTHER-PROVIDER\",\"ClientFee\":\"100.00\",\"VendorFee\":\"100.00\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/Items/UserActions/Cancel",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"Items",
+						"UserActions",
+						"Cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order/Create DataMaster",
+			"id": "29689341-56106bbc-a7de-416a-826d-2c24be02845a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "es-US,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "dnt",
+						"value": "1"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Orders/Create"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "ReferrerUrl",
+							"value": "https://cmp-staff.test.classvaluation.com/Users"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderItemID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OrderSourceID",
+							"value": "2"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeignPropertyID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BatchName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DamagedProperty",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SecondaryLoanNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanSystem",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DelinquentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UnpaidBalance",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientID",
+							"value": "56403"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientBranchID",
+							"value": "1060"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ProductID",
+							"value": "215"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BillingTypeID",
+							"value": "INVOICE"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientFee",
+							"value": "100.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RelatedOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PriorOrderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.InvestorCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.CostCenterCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PropertyTypeID",
+							"value": "2"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.OccupancyTypeID",
+							"value": "UNKNOWN"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address1",
+							"value": "1550 W 8295 S"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Address2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PostalCode",
+							"value": "84088"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.City",
+							"value": "West Jordan"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.State",
+							"value": "UT"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FIPS",
+							"value": "49035"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.APN",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Latitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Longitude",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Region",
+							"value": "SUBUR"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.UCDPDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EADDocFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientRefNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts.Index",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeID",
+							"value": "11"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MiddleName",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].SocialSecurityNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Fax",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Email",
+							"value": "sara@sara.com"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].Title",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ParentID",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].ContactTypeDescription",
+							"value": "Borrower"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FirstName",
+							"value": "sara"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].LastName",
+							"value": "sara"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].FullName",
+							"value": "sara sara"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].WorkPhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].HomePhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.Contacts[0].MobilePhone",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanPurposeID",
+							"value": "ACQUISITION"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanTypeID",
+							"value": "ACQUISITION"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanNumber",
+							"value": "4578787"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LienPosition",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SalePrice",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FHACaseNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FannieMaeCaseFileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClassification",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ForeclosureSaleDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LoanClosingDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ContingencyDate",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockLoanClosingDate",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.DUReferenceNumber",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.EstimatedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LastValuationAmount",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.AppraisedValue",
+							"value": "0.00"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToManagement",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.NotesToVendor",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.LockboxCode",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ServiceRepUser",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.RushOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.BorrowerDelay",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ComplexProperty",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.FamousBorrower",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SidebySideOrder",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime1",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.SuppliedApptEndTime2",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ActualApptTime",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.PartialPaymentAmount",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "OrderItemEdit.ClientWholesellerID",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Orders/Create",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Orders",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://cmp-staff.test.classvaluation.com/Clients/56130/Products/1",
+			"id": "29689341-fc379e8d-32d2-449a-a29d-33a6ac968be8",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "priority",
+						"value": "u=0, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Clients/56130/Dashboard?Tab=products"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "document"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "navigate"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "sec-fetch-user",
+						"value": "?1"
+					},
+					{
+						"key": "upgrade-insecure-requests",
+						"value": "1"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Cookie",
+						"value": "ASP.NET_SessionId=xgcgen0pclxmw1a3mtkynsud; __RequestVerificationToken=EsiZnwSlEP5rota2sbuH33iPqm0cTmfHINhkMfC_x-YkrLcMfsM0VZlIrhCdzlcsO23z4a0ubkHHhJ4YvE4WErytzgtcV8EF7BuLylt1m4U1; .ASPXAUTH=C73B0DF585E9D970997D0E63923B24532FAF3FDAE0272F1B079C7ADC305B9A4F9DA8B298268BFFA4B7F1C0C7319F1B51C4A8B69A3AD12BDD3E95B0C87B2511D4E5CDEF08D421BAE395752ECB33A1552F3C2CCF7AAD3A5923CDF58610AC54890A"
+					}
+				],
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Clients/56130/Products/1",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Clients",
+						"56130",
+						"Products",
+						"1"
+					]
+				},
+				"description": "Generated from cURL: curl 'https://cmp-staff.test.classvaluation.com/Clients/56130/Products/1' \\\r\n  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \\\r\n  -H 'accept-language: en-US,en;q=0.9' \\\r\n  -H 'cache-control: no-cache' \\\r\n  -b 'ASP.NET_SessionId=xgcgen0pclxmw1a3mtkynsud; __RequestVerificationToken=EsiZnwSlEP5rota2sbuH33iPqm0cTmfHINhkMfC_x-YkrLcMfsM0VZlIrhCdzlcsO23z4a0ubkHHhJ4YvE4WErytzgtcV8EF7BuLylt1m4U1; .ASPXAUTH=C73B0DF585E9D970997D0E63923B24532FAF3FDAE0272F1B079C7ADC305B9A4F9DA8B298268BFFA4B7F1C0C7319F1B51C4A8B69A3AD12BDD3E95B0C87B2511D4E5CDEF08D421BAE395752ECB33A1552F3C2CCF7AAD3A5923CDF58610AC54890A' \\\r\n  -H 'pragma: no-cache' \\\r\n  -H 'priority: u=0, i' \\\r\n  -H 'referer: https://cmp-staff.test.classvaluation.com/Clients/56130/Dashboard?Tab=products' \\\r\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\r\n  -H 'sec-ch-ua-mobile: ?0' \\\r\n  -H 'sec-ch-ua-platform: \"Windows\"' \\\r\n  -H 'sec-fetch-dest: document' \\\r\n  -H 'sec-fetch-mode: navigate' \\\r\n  -H 'sec-fetch-site: same-origin' \\\r\n  -H 'sec-fetch-user: ?1' \\\r\n  -H 'upgrade-insecure-requests: 1' \\\r\n  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'"
+			},
+			"response": []
+		},
+		{
+			"name": "https://cmp-staff.test.classvaluation.com/Clients/56130/Products/undefined",
+			"id": "29689341-7f491b3d-9cca-4660-817a-95836495cc40",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9"
+					},
+					{
+						"key": "cache-control",
+						"value": "no-cache"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "origin",
+						"value": "https://cmp-staff.test.classvaluation.com"
+					},
+					{
+						"key": "pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i"
+					},
+					{
+						"key": "referer",
+						"value": "https://cmp-staff.test.classvaluation.com/Clients/56130/Products/1"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					},
+					{
+						"key": "Cookie",
+						"value": "ASP.NET_SessionId=xgcgen0pclxmw1a3mtkynsud; __RequestVerificationToken=EsiZnwSlEP5rota2sbuH33iPqm0cTmfHINhkMfC_x-YkrLcMfsM0VZlIrhCdzlcsO23z4a0ubkHHhJ4YvE4WErytzgtcV8EF7BuLylt1m4U1; .ASPXAUTH=D19DA7C10312601762093E00C32F21A5406EF951B7EE6FEDF4912647166056722814A03E956CBF62D461F614882311BDE1A7F4F396B16A20A687DD91C5C13958BC0E53B0C68D837644D432796A990ED5F57B843F3F3CFEDFB0B26089925D53E1"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "ClientProductEdit.CalendarID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ClientSLA",
+							"value": "120"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.RushClientSLA",
+							"value": "90"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.AcceptableMargin",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.MaxAllowedMargin",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.SubmitToUCDPPortal",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.AutoAssignApproved",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.IsInspectionRequired",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.SubmitToFHAPortal",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.SubmitToCatalyst",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.IsFannieMaeInspectionRequired",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DeliverToBorrower",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DeliverToBorrower",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.BorrowerDeliveryMilestone",
+							"value": "130"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.BorrowerNotice",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.CollectValuationSummary",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.RequiredAddendumID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DiscloseFees",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DiscloseFees",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DiscloseStaffVendorFees",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DiscloseStaffVendorFees",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.VendorCalendarID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.VendorSLA",
+							"value": "120"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.RushVendorSLA",
+							"value": "90"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.VendorProductCompletionTypeID",
+							"value": "CLASSINTELLIGENCE"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.FormSetPDFOption",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.VendorReusePreferenceID",
+							"value": "NONE"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.AnalyticsProviderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.HideClientDetails",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DataDeliveryService",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.HotSpotRuleID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.CorrectionTemplateID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.RevisionTemplateID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.AutoQCProviderID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.SkyReviewProfileID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.QualityControlFormSet",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.QCComplexityTierID",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.IntegratorFee",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ShowIntegratorFeeOnInvoice",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.GAARFee",
+							"value": "0"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ShowGAARFeeOnInvoice",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.MismoPreference",
+							"value": "Store"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.UADReportRequired",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ACIPreference",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ENVPreference",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.DeliverPDF",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "AFID_AIC-Bluebird-v2024",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "AFID_AIC-Class-v2024",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "AFID_NavyFed-EL",
+							"value": "false"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ClientID",
+							"value": "56130"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.IsNew",
+							"value": "False"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ProductID",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.Instructions",
+							"value": "<p data-pm-slice=\"1 1 [&quot;bulletList&quot;,null,&quot;listItem&quot;,null]\"><br></p>"
+						},
+						{
+							"type": "text",
+							"key": "ProductTypes",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.ProductIDs",
+							"value": "1"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.SubmitToCatalyst",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"key": "undefined",
+							"value": "Insert Link"
+						},
+						{
+							"type": "text",
+							"key": "undefined",
+							"value": "Insert Image"
+						},
+						{
+							"type": "text",
+							"key": "undefined",
+							"value": "Insert Video"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.FormSet",
+							"value": ""
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.FormSetPDFOption",
+							"value": "true"
+						},
+						{
+							"type": "text",
+							"key": "ClientProductEdit.FormSetPDF",
+							"value": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "https://cmp-staff.test.classvaluation.com/Clients/56130/Products/undefined",
+					"protocol": "https",
+					"host": [
+						"cmp-staff",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"Clients",
+						"56130",
+						"Products",
+						"undefined"
+					]
+				},
+				"description": "Generated from cURL: curl 'https://cmp-staff.test.classvaluation.com/Clients/56130/Products/undefined' \\\r\n  -X 'PUT' \\\r\n  -H 'accept: application/json, text/javascript, */*; q=0.01' \\\r\n  -H 'accept-language: en-US,en;q=0.9' \\\r\n  -H 'cache-control: no-cache' \\\r\n  -H 'content-type: application/x-www-form-urlencoded' \\\r\n  -b 'ASP.NET_SessionId=xgcgen0pclxmw1a3mtkynsud; __RequestVerificationToken=EsiZnwSlEP5rota2sbuH33iPqm0cTmfHINhkMfC_x-YkrLcMfsM0VZlIrhCdzlcsO23z4a0ubkHHhJ4YvE4WErytzgtcV8EF7BuLylt1m4U1; .ASPXAUTH=D19DA7C10312601762093E00C32F21A5406EF951B7EE6FEDF4912647166056722814A03E956CBF62D461F614882311BDE1A7F4F396B16A20A687DD91C5C13958BC0E53B0C68D837644D432796A990ED5F57B843F3F3CFEDFB0B26089925D53E1' \\\r\n  -H 'origin: https://cmp-staff.test.classvaluation.com' \\\r\n  -H 'pragma: no-cache' \\\r\n  -H 'priority: u=1, i' \\\r\n  -H 'referer: https://cmp-staff.test.classvaluation.com/Clients/56130/Products/1' \\\r\n  -H 'sec-ch-ua: \"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"' \\\r\n  -H 'sec-ch-ua-mobile: ?0' \\\r\n  -H 'sec-ch-ua-platform: \"Windows\"' \\\r\n  -H 'sec-fetch-dest: empty' \\\r\n  -H 'sec-fetch-mode: cors' \\\r\n  -H 'sec-fetch-site: same-origin' \\\r\n  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36' \\\r\n  -H 'x-requested-with: XMLHttpRequest' \\\r\n  --data-raw 'ClientProductEdit.CalendarID=1&ClientProductEdit.ClientSLA=120&ClientProductEdit.RushClientSLA=90&ClientProductEdit.AcceptableMargin=&ClientProductEdit.MaxAllowedMargin=0&ClientProductEdit.SubmitToUCDPPortal=false&ClientProductEdit.AutoAssignApproved=false&ClientProductEdit.IsInspectionRequired=false&ClientProductEdit.SubmitToFHAPortal=false&ClientProductEdit.SubmitToCatalyst=false&ClientProductEdit.IsFannieMaeInspectionRequired=false&ClientProductEdit.DeliverToBorrower=true&ClientProductEdit.DeliverToBorrower=false&ClientProductEdit.BorrowerDeliveryMilestone=130&ClientProductEdit.BorrowerNotice=false&ClientProductEdit.CollectValuationSummary=false&ClientProductEdit.RequiredAddendumID=&ClientProductEdit.DiscloseFees=true&ClientProductEdit.DiscloseFees=false&ClientProductEdit.DiscloseStaffVendorFees=true&ClientProductEdit.DiscloseStaffVendorFees=false&ClientProductEdit.VendorCalendarID=1&ClientProductEdit.VendorSLA=120&ClientProductEdit.RushVendorSLA=90&ClientProductEdit.VendorProductCompletionTypeID=CLASSINTELLIGENCE&ClientProductEdit.FormSetPDFOption=false&ClientProductEdit.VendorReusePreferenceID=NONE&ClientProductEdit.AnalyticsProviderID=&ClientProductEdit.HideClientDetails=false&ClientProductEdit.DataDeliveryService=&ClientProductEdit.HotSpotRuleID=&ClientProductEdit.CorrectionTemplateID=1&ClientProductEdit.RevisionTemplateID=1&ClientProductEdit.AutoQCProviderID=&ClientProductEdit.SkyReviewProfileID=&ClientProductEdit.QualityControlFormSet=&ClientProductEdit.QCComplexityTierID=&ClientProductEdit.IntegratorFee=0&ClientProductEdit.ShowIntegratorFeeOnInvoice=false&ClientProductEdit.GAARFee=0&ClientProductEdit.ShowGAARFeeOnInvoice=false&ClientProductEdit.MismoPreference=Store&ClientProductEdit.UADReportRequired=false&ClientProductEdit.ACIPreference=&ClientProductEdit.ENVPreference=&ClientProductEdit.DeliverPDF=false&AFID_AIC-Bluebird-v2024=false&AFID_AIC-Class-v2024=false&AFID_NavyFed-EL=false&ClientProductEdit.ClientID=56130&ClientProductEdit.IsNew=False&ClientProductEdit.ProductID=1&ClientProductEdit.Instructions=%3Cp+data-pm-slice%3D%221+1+%5B%26quot%3BbulletList%26quot%3B%2Cnull%2C%26quot%3BlistItem%26quot%3B%2Cnull%5D%22%3E%3Cbr%3E%3C%2Fp%3E&ProductTypes=&ClientProductEdit.ProductIDs=1&ClientProductEdit.SubmitToCatalyst=true&undefined=Insert+Link&undefined=Insert+Image&undefined=Insert+Video&ClientProductEdit.FormSet=&ClientProductEdit.FormSetPDFOption=true&ClientProductEdit.FormSetPDF='"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "de0a927f-206a-4ffb-80d9-98294449c431",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6e5e77bb-3da7-4632-a2f1-6bb94015b782",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ClientID",
+			"value": "56130",
+			"type": "string"
+		},
+		{
+			"key": "ClientBranchID",
+			"value": "1016",
+			"type": "string"
+		},
+		{
+			"key": "ProductID",
+			"value": "298",
+			"type": "string"
+		},
+		{
+			"key": "Product1070",
+			"value": "215",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "BillingTypeID",
+			"value": "INVOICE",
+			"type": "string"
+		},
+		{
+			"key": "ClientFee",
+			"value": "100.00",
+			"type": "string"
+		},
+		{
+			"key": "PropertyTypeID",
+			"value": "13",
+			"type": "string"
+		},
+		{
+			"key": "OccupancyTypeID",
+			"value": "TENANT",
+			"type": "string"
+		},
+		{
+			"key": "Address1",
+			"value": "Madison St",
+			"type": "string"
+		},
+		{
+			"key": "Address2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PostalCode",
+			"value": "80205",
+			"type": "string"
+		},
+		{
+			"key": "City",
+			"value": "Denver",
+			"type": "string"
+		},
+		{
+			"key": "State",
+			"value": "CO",
+			"type": "string"
+		},
+		{
+			"key": "Region",
+			"value": "URBAN",
+			"type": "string"
+		},
+		{
+			"key": "LoanPurposeID",
+			"value": "BANKRUPTCY",
+			"type": "string"
+		},
+		{
+			"key": "LoanTypeID",
+			"value": "PRIVATE",
+			"type": "string"
+		},
+		{
+			"key": "LoanAmount",
+			"value": "0.00",
+			"type": "string"
+		},
+		{
+			"key": "LienPosition",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "SalePrice",
+			"value": "0.00",
+			"type": "string"
+		},
+		{
+			"key": "RushOrder",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "BorrowerDelay",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "ComplexProperty",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "FamousBorrower",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "SidebySideOrder",
+			"value": "false",
+			"type": "string"
+		},
+		{
+			"key": "OrderID",
+			"value": ""
+		},
+		{
+			"key": "OrderItemID",
+			"value": ""
+		},
+		{
+			"key": "CreditCarPayment",
+			"value": "DEFERRED",
+			"type": "string"
+		}
+	]
+}

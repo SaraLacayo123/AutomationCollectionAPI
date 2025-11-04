@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - npm install -g newman
+      - npm install -g newman-reporter-html
+
+  build:
+    commands:
+      - newman run -r html,cli OrderCreation_WF.postman_collection.json --reporter-html-export report.html
+
+artifacts:
+  files:
+    - report.html

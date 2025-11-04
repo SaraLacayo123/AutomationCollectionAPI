@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "29689341-ef3bffc5-2358-4d9e-b4af-d6a50dfec0bc",
+		"name": "cv_propertydata v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get_token_sesion_PSDM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "860a8d46-d227-4e94-9f38-6b4a9aa01e3e",
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"bearerTokenDM\",data.access_token);\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29689341-3558230e-b54b-441b-857e-3a23d7017d02",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "grant_type",
+							"value": "{{grant_type}}"
+						},
+						{
+							"type": "text",
+							"key": "client_id",
+							"value": "{{client_id}}"
+						},
+						{
+							"type": "text",
+							"key": "refresh_token",
+							"value": "WN4WF51zi2qCv3QWDZdGw2fiasCjPMu76tfzqrHRaTY"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ids.test.classvaluation.com/connect/token",
+					"protocol": "https",
+					"host": [
+						"ids",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get_token_sesion_PSDM Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "860a8d46-d227-4e94-9f38-6b4a9aa01e3e",
+						"exec": [
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"bearerTokenDM\",data.access_token);\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29689341-1d8a7c87-9dca-42cb-b558-9fc598d51cb2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "grant_type",
+							"value": "{{grant_type}}"
+						},
+						{
+							"type": "text",
+							"key": "client_id",
+							"value": "{{client_id}}"
+						},
+						{
+							"type": "text",
+							"key": "refresh_token",
+							"value": "WN4WF51zi2qCv3QWDZdGw2fiasCjPMu76tfzqrHRaTY"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ids.test.classvaluation.com/connect/token",
+					"protocol": "https",
+					"host": [
+						"ids",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_addressPartialSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b04626b3-54ca-4bd5-bad4-06352a337a1b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29689341-cccca1fe-7cca-4348-809e-4b64a497a570",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerTokenDM}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2OTgwODM2MjIsImV4cCI6MTY5ODA4NzIyMiwiaXNzIjoiaHR0cHM6Ly9pZHMudGVzdC5jbGFzc3ZhbHVhdGlvbi5jb20iLCJhdWQiOlsiYXBwcmFpc2VybXAuYXBpIiwiaW50ZWxsaWdlbmNlLmRlc2t0b3AiLCJpbnRlbGxpZ2VuY2UucWMiLCJuZXhzeXMuYXBpIiwib3JkZXJzLmFwaSIsInByb3BlcnR5ZGF0YS5hcGkiLCJ1c2VyLmFwaSJdLCJjbGllbnRfaWQiOiJwb3N0bWFuX2RldmVsb3BfdGVzdCIsInN1YiI6IjY0ZmY2YjFlYmI1N2ZhZDhmZjNkNDI1YyIsImF1dGhfdGltZSI6MTY5ODA4MzYyMiwiaWRwIjoibG9jYWwiLCJuYW1lIjoic2xhY2F5bzEiLCJmaXJzdF9uYW1lIjoiU2FyYSIsImxhc3RfbmFtZSI6IkxhY2F5byIsImVtYWlsIjoic2xhY2F5b0BjbGFzc3ZhbHVhdGlvbi5jb20iLCJjdi5jb25uZWN0aW9uIjoiQ2xhc3NWYWx1YXRpb24iLCJ1c2VyVHlwZSI6IiIsInJvbGUiOlsiZW1wdHkiLCJEQVRBTUFTVEVSIiwiREFUQU1BU1RFUi1TVVBQT1JUIiwiQVBQUkFJU0VSIl0sInBlcm1pc3Npb24iOlsiZW1wdHkiLCJkZXNrdG9wOmFjY2VzcyIsImRlc2t0b3A6c2VhcmNoYWxsIiwiZGVza3RvcDplZGl0LW9yZGVyIiwiZGVza3RvcDpleHBvcnQtZGF0YSIsImFwcHJhaXNlcm1wOmFjY2VzcyIsImRlc2t0b3A6YWNzYS1hbGwtb3JkZXIiLCJ1bTphY2Nlc3MiLCJkYXRhbWFzdGVyOmFjY2VzcyIsInByb3BlcnR5ZGF0YTphY2Nlc3MiLCJleHBvcnQ6YWNjZXNzIiwiZGF0YW1hc3RlcjppbXBlcnNvbmF0ZSJdLCJzY29wZSI6WyJvcGVuaWQiLCJhcHByYWlzZXJtcC5hcGkiLCJpbnRlbGxpZ2VuY2UuZGVza3RvcCIsImludGVsbGlnZW5jZS5xYyIsIm5leHN5cy5hcGkiLCJvcmRlcnMuYXBpIiwicHJvcGVydHlkYXRhLmFwaSIsInVzZXIuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInBhc3N3b3JkIl19.xH_j0z9RFB2Q8EUkp7QzgB7VAg2S2RoFw_zgV0R_lBspcEipCVe9il00PPaIQKPPg6xKzr0tCpmOMRPL0EfojXGWLgWIzTZzcdOmX7qqWFUpABZwCBix5SA4UVKW6p2nWKh1DiKIKGQoPjus1ho32V7x_AsVCrgdaDcO_e_Faw2_WT1qjb4QTKKGioPo0Qd85PALs-EcTMUwyeukPZuSfDUYjzGxPSY_Rhj7i06NMGfy1xxxelW2huQr3DbVvr-XAAKr0s6GsKX03p9rMfov3AYLPMM5QbrARMdjKKimyDJd3V04gFU1WklnCzBTODhGMFlu4Y7rO8Vs_22MKs-utg",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base_urlPS}}/api/addressPartialSearch?api-version={{api-version}}&unparsedAddress=956",
+					"host": [
+						"{{base_urlPS}}"
+					],
+					"path": [
+						"api",
+						"addressPartialSearch"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{api-version}}"
+						},
+						{
+							"key": "unparsedAddress",
+							"value": "956"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_addressldSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "785c5bf6-9152-46b7-81b2-06d135c44697",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29689341-eabd1b40-bea8-4a58-b7ec-786ea1770a10",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerTokenDM}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2OTgwODM2MjIsImV4cCI6MTY5ODA4NzIyMiwiaXNzIjoiaHR0cHM6Ly9pZHMudGVzdC5jbGFzc3ZhbHVhdGlvbi5jb20iLCJhdWQiOlsiYXBwcmFpc2VybXAuYXBpIiwiaW50ZWxsaWdlbmNlLmRlc2t0b3AiLCJpbnRlbGxpZ2VuY2UucWMiLCJuZXhzeXMuYXBpIiwib3JkZXJzLmFwaSIsInByb3BlcnR5ZGF0YS5hcGkiLCJ1c2VyLmFwaSJdLCJjbGllbnRfaWQiOiJwb3N0bWFuX2RldmVsb3BfdGVzdCIsInN1YiI6IjY0ZmY2YjFlYmI1N2ZhZDhmZjNkNDI1YyIsImF1dGhfdGltZSI6MTY5ODA4MzYyMiwiaWRwIjoibG9jYWwiLCJuYW1lIjoic2xhY2F5bzEiLCJmaXJzdF9uYW1lIjoiU2FyYSIsImxhc3RfbmFtZSI6IkxhY2F5byIsImVtYWlsIjoic2xhY2F5b0BjbGFzc3ZhbHVhdGlvbi5jb20iLCJjdi5jb25uZWN0aW9uIjoiQ2xhc3NWYWx1YXRpb24iLCJ1c2VyVHlwZSI6IiIsInJvbGUiOlsiZW1wdHkiLCJEQVRBTUFTVEVSIiwiREFUQU1BU1RFUi1TVVBQT1JUIiwiQVBQUkFJU0VSIl0sInBlcm1pc3Npb24iOlsiZW1wdHkiLCJkZXNrdG9wOmFjY2VzcyIsImRlc2t0b3A6c2VhcmNoYWxsIiwiZGVza3RvcDplZGl0LW9yZGVyIiwiZGVza3RvcDpleHBvcnQtZGF0YSIsImFwcHJhaXNlcm1wOmFjY2VzcyIsImRlc2t0b3A6YWNzYS1hbGwtb3JkZXIiLCJ1bTphY2Nlc3MiLCJkYXRhbWFzdGVyOmFjY2VzcyIsInByb3BlcnR5ZGF0YTphY2Nlc3MiLCJleHBvcnQ6YWNjZXNzIiwiZGF0YW1hc3RlcjppbXBlcnNvbmF0ZSJdLCJzY29wZSI6WyJvcGVuaWQiLCJhcHByYWlzZXJtcC5hcGkiLCJpbnRlbGxpZ2VuY2UuZGVza3RvcCIsImludGVsbGlnZW5jZS5xYyIsIm5leHN5cy5hcGkiLCJvcmRlcnMuYXBpIiwicHJvcGVydHlkYXRhLmFwaSIsInVzZXIuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInBhc3N3b3JkIl19.xH_j0z9RFB2Q8EUkp7QzgB7VAg2S2RoFw_zgV0R_lBspcEipCVe9il00PPaIQKPPg6xKzr0tCpmOMRPL0EfojXGWLgWIzTZzcdOmX7qqWFUpABZwCBix5SA4UVKW6p2nWKh1DiKIKGQoPjus1ho32V7x_AsVCrgdaDcO_e_Faw2_WT1qjb4QTKKGioPo0Qd85PALs-EcTMUwyeukPZuSfDUYjzGxPSY_Rhj7i06NMGfy1xxxelW2huQr3DbVvr-XAAKr0s6GsKX03p9rMfov3AYLPMM5QbrARMdjKKimyDJd3V04gFU1WklnCzBTODhGMFlu4Y7rO8Vs_22MKs-utg",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base_urlPS}}/api/addressIdSearch?api-version={{api-version}}",
+					"host": [
+						"{{base_urlPS}}"
+					],
+					"path": [
+						"api",
+						"addressIdSearch"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{api-version}}"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_addressSearchFull",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "558fecc4-d90d-4c86-ae56-fc36eb1b374d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29689341-d478ec43-b287-4b0a-ab54-487b6ee0f7eb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerTokenDM}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_urlPS}}/api/addressSearch?api-version={{api-version}}",
+					"host": [
+						"{{base_urlPS}}"
+					],
+					"path": [
+						"api",
+						"addressSearch"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "{{api-version}}"
+						},
+						{
+							"key": "streetNumber",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "streetDirPrefix",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "streetName",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "streetDirSuffix",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "state",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "county",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "zip",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_parcelNumberSearch",
+			"id": "29689341-ec5392a3-0f1d-4f8a-819e-cb77063f78cf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://property-data-api.test.classvaluation.com/api/parcelNumbersSearch?api-version=2",
+					"protocol": "https",
+					"host": [
+						"property-data-api",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"api",
+						"parcelNumbersSearch"
+					],
+					"query": [
+						{
+							"key": "api-version",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4156287c-ff12-4656-87c6-3fc83af6ade9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8e15931d-45f7-4f73-9280-bdebfc4bc013",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api-version",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "OrderId",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

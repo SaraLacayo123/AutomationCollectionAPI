@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "29689341-f44427bc-ce7b-4e18-9969-885bdebf8316",
+		"name": "Sync Coordenadas_AppScope_Order_TEST",
+		"description": "- **Collection:**\n    \n\nAMP-Vendor Experience and AppScope\n\n- **System:**\n    \n    - AMP-VendorExperience\n        \n    - AppScope\n        \n\n- **Description:**\n    \n\nUsefull endpoints and requests to interact with AMP-Vendor Experience and AppScope systems. This collection allow us to:\n\n1. Create TestData (Clone Orders) in AppScope system\n    \n2. Update Order Statuses in AppScope system (Accepted --> Inspection Schedule --> Inspection Completed)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get_token_sesion_AMP_TEST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "860a8d46-d227-4e94-9f38-6b4a9aa01e3e",
+						"exec": [
+							"pm.test(\"Get Token Session have 200 code and have a body\", function () {\r",
+							"    pm.expect(pm.response.to.have.status(200));\r",
+							"    pm.expect(pm.response.to.have.body);\r",
+							"});\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"\r",
+							"pm.environment.set(\"bearerToken\", data.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6cd903dc-6cd9-42a0-a4cd-5a4216b38860",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-41e2945e-144a-48da-af88-05c414369d5e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"118\", \"Google Chrome\";v=\"118\", \"Not=A?Brand\";v=\"99\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkY0cnM4NU55NGk0bzFCRWhSNkhlbHciLCJ0eXAiOiJhdCtqd3QifQ.eyJuYmYiOjE2OTc2NTEzMDYsImV4cCI6MTY5NzY3MjkwNiwiaXNzIjoiaHR0cHM6Ly9pZHMudGVzdC5jbGFzc3ZhbHVhdGlvbi5jb20iLCJhdWQiOlsiaW50ZWxsaWdlbmNlLmRlc2t0b3AiLCJuZXhzeXMuYXBpIiwiaW50ZWxsaWdlbmNlLnFjIiwib3JkZXJzLmFwaSIsImFwcHJhaXNlcm1wLmFwaSIsInVzZXIuYXBpIl0sImNsaWVudF9pZCI6IkFwcHJhc2llck1hcmtldHBsYWNlVVgiLCJzdWIiOiI2NGZmNmIxZWJiNTdmYWQ4ZmYzZDQyNWMiLCJhdXRoX3RpbWUiOjE2OTc2NTAwODUsImlkcCI6ImxvY2FsIiwibmFtZSI6InNsYWNheW8xIiwiZmlyc3RfbmFtZSI6IlNhcmEiLCJsYXN0X25hbWUiOiJMYWNheW8iLCJlbWFpbCI6InNsYWNheW9AY2xhc3N2YWx1YXRpb24uY29tIiwiY3YuY29ubmVjdGlvbiI6IkNsYXNzVmFsdWF0aW9uIiwidXNlclR5cGUiOiIiLCJyb2xlIjpbImVtcHR5IiwiQVBQUkFJU0VSIl0sInBlcm1pc3Npb24iOlsiZW1wdHkiLCJkZXNrdG9wOmFjY2VzcyIsImRlc2t0b3A6c2VhcmNoYWxsIiwiZGVza3RvcDplZGl0LW9yZGVyIiwiZGVza3RvcDpleHBvcnQtZGF0YSIsImFwcHJhaXNlcm1wOmFjY2VzcyIsImRlc2t0b3A6YWNzYS1hbGwtb3JkZXIiLCJ1bTphY2Nlc3MiXSwic2NvcGUiOlsib3BlbmlkIiwiaW50ZWxsaWdlbmNlLmRlc2t0b3AiLCJuZXhzeXMuYXBpIiwiaW50ZWxsaWdlbmNlLnFjIiwib3JkZXJzLmFwaSIsImFwcHJhaXNlcm1wLmFwaSIsInVzZXIuYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.Ipu64Y5NjLHJWg9rmr1Vc6u65tnF0WoLvjuSVqtlEkr5iM5eu9J-4kT1BWYd0B0L_sEcukiiI5i0hbjeRg_v2083HOFfAlasBzYE-yyh2DJbpyKPGVgTfGcgDsvipY-jGVsJqs9UMzdtCOuqCA20-M_WSJCuqWAxJ5O957inZwQHAZPK3Zfi2fZ6s_0YL0fzLhYgf9dyHoV_if-Xe3xRJWNYyqM6czMCGDHElzSbC_WQDBWFthyLNRYFWoVF4eESuwEQYLMF7M8kcgZEa0U88sOCxXLFw9HlDF_9r8pp4Q6GvoD_1eYWmfi0e4xiZ6YBXkwPOBOX9orIjvjQ0w-gKw"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "ngsw-bybass",
+						"value": "true"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Referer",
+						"value": "https://invision-plus.test.classvaluation.com/"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"type": "text",
+							"key": "grant_type",
+							"value": "password"
+						},
+						{
+							"type": "text",
+							"key": "client_id",
+							"value": "postman_develop_test"
+						},
+						{
+							"type": "text",
+							"key": "refresh_token",
+							"value": "WN4WF51zi2qCv3QWDZdGw2fiasCjPMu76tfzqrHRaTY",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "jvega1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "P@ssword99@",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "POST_MAN_TEST",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ids.test.classvaluation.com/connect/token",
+					"protocol": "https",
+					"host": [
+						"ids",
+						"test",
+						"classvaluation",
+						"com"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/orderId - Get lat and long",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a85f2d53-9314-431c-b547-919444027a27",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "908b5feb-acc9-4845-b76a-3553b7eeba13",
+						"exec": [
+							"//Capture the JSON Response",
+							"var jsonData = pm.response.json();",
+							"var lat = jsonData.address.latitude;",
+							"var long = jsonData.address.longitude;",
+							"var orderId = jsonData.id;",
+							"",
+							"//Reset needSync flag",
+							"pm.environment.set(\"needSync\", false);",
+							"",
+							"//Set latitude and longitude",
+							"pm.environment.set(\"latitude\", lat);",
+							"pm.environment.set(\"longitude\", long);",
+							"",
+							"pm.test(\"Check Order Id to call is not null\", function () { ",
+							"    pm.expect(orderId).to.be.not.null;",
+							"    console.log(`OrderId: ${orderId}`);",
+							"});",
+							"",
+							"pm.test(\"Get Order Details Response have 200 code and have a body\", function () {",
+							"    pm.expect(pm.response.to.have.status(200));",
+							"    pm.expect(pm.response.to.have.body);",
+							"});",
+							"",
+							"pm.test(\"Verify latitud and longitude is not a null value\", function () { ",
+							"    pm.expect(pm.environment.get(\"latitude\")).to.be.not.null;",
+							"    pm.expect(pm.environment.get(\"longitude\")).to.be.not.null;",
+							"    console.log(`Original latitude : ${lat}`);",
+							"    console.log(`Original longitude: ${long}`);",
+							"});",
+							"",
+							"if(lat == null && long == null){",
+							"        pm.environment.set(\"needSync\", true);",
+							"};",
+							"",
+							"//Await to send the next Request",
+							"var needSync = pm.environment.get(\"needSync\");",
+							"if(needSync == true){",
+							"    pm.execution.setNextRequest(\"Sync_Orders\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-0de522bd-0174-44ed-a1ec-df8a6ce7b8d4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Referer",
+						"value": "https://invision-plus.test.classvaluation.com/"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/Orders/{{sync_orderId}}?includeEligibility=false&sms=false",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"Orders",
+						"{{sync_orderId}}"
+					],
+					"query": [
+						{
+							"key": "includeEligibility",
+							"value": "false"
+						},
+						{
+							"key": "sms",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "29689341-17be90e4-8ba7-4923-8e3d-dadd62cd50ad",
+					"name": "Orders/orderId - Get lat and long",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\""
+							},
+							{
+								"key": "DNT",
+								"value": "1"
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?0"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "Cache-Control",
+								"value": "no-cache"
+							},
+							{
+								"key": "Referer",
+								"value": "https://invision-plus.test.classvaluation.com/"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Windows\""
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/Orders/{{sync_orderId}}?includeEligibility=false&sms=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Orders",
+								"{{sync_orderId}}"
+							],
+							"query": [
+								{
+									"key": "includeEligibility",
+									"value": "false"
+								},
+								{
+									"key": "sms",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 27 Sep 2024 00:43:25 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "api-supported-versions",
+							"value": "1.0"
+						},
+						{
+							"key": "X-Server-Timing",
+							"value": "total;dur=209"
+						}
+					],
+					"cookie": [],
+					"responseTime": null,
+					"body": "{\n    \"id\": \"6171a4c109a3c8000ad4a51a\",\n    \"provider\": \"appscope\",\n    \"providerId\": \"5197\",\n    \"providerExternalId\": \"5150\",\n    \"publicRecords\": \"multiple\",\n    \"address\": {\n        \"street1\": \"420 Balsam Ave\",\n        \"street2\": \"test address 7\",\n        \"city\": \"Aguilar\",\n        \"state\": \"CO\",\n        \"county\": \"Las animas\",\n        \"zip\": \"81020\",\n        \"latitude\": 37.401684,\n        \"longitude\": -104.66073\n    },\n    \"assigned\": null,\n    \"assignedTo\": null,\n    \"status\": \"Cancelled\",\n    \"lender\": \"Test Company\",\n    \"dueDate\": \"2021-11-11T17:00:00Z\",\n    \"loan\": \"19993524191\",\n    \"fee\": null,\n    \"distance\": 99.4,\n    \"loanType\": \"Conventional\",\n    \"fha\": null,\n    \"purpose\": \"Refinance\",\n    \"created\": \"2021-10-21T17:34:51Z\",\n    \"activity\": null,\n    \"accepted\": null,\n    \"bidInfo\": null,\n    \"eligibility\": null,\n    \"apmStatus\": {\n        \"status\": \"apm_order_status_cancelled\",\n        \"description\": null,\n        \"orderId\": \"6171a4c109a3c8000ad4a51a\"\n    },\n    \"form\": \"Single-family Appraisal (1004)\",\n    \"inspectionDate\": null,\n    \"estimatedCompletationDate\": null,\n    \"primaryContact\": \"\",\n    \"borrower\": null,\n    \"coborrower\": null,\n    \"primaryContactInfo\": null,\n    \"isDigital\": false,\n    \"inspectionScheduleRejectedByPrimaryContact\": false,\n    \"inspectionScheduleRejectedByReminder\": false,\n    \"messagesAvailable\": 0\n}"
+				}
+			]
+		},
+		{
+			"name": "Sync_Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "11130293-e755-479e-a186-58edced68b82",
+						"exec": [
+							"pm.test(\"Sync Orders Response have 200 code and have a body\", function () {",
+							"    pm.expect(pm.response.to.have.status(200));",
+							"    pm.expect(pm.response.to.have.body);",
+							"});",
+							"",
+							"//Capture the JSON Response",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Sync Orders Response have 200 code and have a body\", function () {",
+							"    pm.expect(pm.response.to.have.status(200));",
+							"    pm.expect(pm.response.to.have.body);",
+							"});",
+							"",
+							"pm.test(\"Sync Orders Response returns orderId\", function () {",
+							"        pm.expect(jsonData.orderId).to.be.not.null;",
+							"        console.log(`${jsonData.message} OrderId: ${jsonData.orderId}`);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "822d28e7-a8be-4766-8211-1daf5e0d345e",
+						"exec": [
+							"//Get needSync flag",
+							"if (pm.environment.get(\"needSync\") == false) {",
+							"    pm.execution.skipRequest() //Don`t process anymore requests",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-2e756ff0-a08e-4001-9505-36e9d1944334",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/PublicRecords/{{sync_orderId}}/sync-public-record",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"PublicRecords",
+						"{{sync_orderId}}",
+						"sync-public-record"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders/orderId - Verify sync",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a85f2d53-9314-431c-b547-919444027a27",
+						"exec": [
+							"//Get needSync flag",
+							"if (pm.environment.get(\"needSync\") == false) {",
+							"    pm.execution.skipRequest() //Don`t process anymore requests",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "908b5feb-acc9-4845-b76a-3553b7eeba13",
+						"exec": [
+							"pm.test(\"Get Order Details Response have 200 code and have a body\", function () {",
+							"    pm.expect(pm.response.to.have.status(200));",
+							"    pm.expect(pm.response.to.have.body);",
+							"});",
+							"",
+							"//Capture the JSON Response",
+							"var jsonData = pm.response.json();",
+							"var lat = jsonData.address.latitude;",
+							"var long = jsonData.address.longitude;",
+							"var orderId = jsonData.id;",
+							"",
+							"pm.test(\"Verify latitud and longitude after Sync Order is not a null value\", function () { ",
+							"    pm.expect(orderId).to.be.not.null;    ",
+							"    pm.expect(jsonData.address.latitude).to.be.not.null;",
+							"    pm.expect(jsonData.address.longitude).to.be.not.null;",
+							"    console.log(`OrderId: ${orderId}`);",
+							"    console.log(`latitude after sync: ${lat}`);",
+							"    console.log(`longitude after sync: ${long}`);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "29689341-e8942349-a0ec-4424-bbf4-a8c85f215c43",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\""
+					},
+					{
+						"key": "DNT",
+						"value": "1"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache"
+					},
+					{
+						"key": "Referer",
+						"value": "https://invision-plus.test.classvaluation.com/"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\""
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/Orders/{{sync_orderId}}?includeEligibility=false&sms=false",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"Orders",
+						"{{sync_orderId}}"
+					],
+					"query": [
+						{
+							"key": "includeEligibility",
+							"value": "false"
+						},
+						{
+							"key": "sms",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"id": "29689341-29568968-5bad-4f84-923d-fff9193d6faf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cc31d6b2-9feb-48e2-9c83-645da678e2b6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8ef7f095-16b1-44be-a066-c691ab2e894a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
